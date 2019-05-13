@@ -1,9 +1,9 @@
 {
-  "name": "gatsby-minimal-blog",
+  "name": "intelligible-babble",
   "private": true,
-  "description": "A simple minimal starter to get up and developing quickly with Gatsby",
+  "description": "Leland Richardson's Blog",
   "version": "0.1.0",
-  "author": "Boy with Silver Wings <agney@outlook.in>",
+  "author": "Leland Richardson",
   "dependencies": {
     "@weknow/gatsby-remark-twitter": "^0.2.0",
     "babel-plugin-styled-components": "^1.10.0",
@@ -25,6 +25,7 @@
     "gatsby-source-filesystem": "^2.0.8",
     "gatsby-transformer-remark": "^2.1.17",
     "gatsby-transformer-sharp": "^2.1.9",
+    "gh-pages": "^2.0.1",
     "prismjs": "^1.15.0",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
@@ -44,9 +45,8 @@
   "license": "MIT",
   "scripts": {
     "build": "gatsby build",
-    "develop": "gatsby develop",
-    "start": "npm run develop",
-    "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
+    "start": "gatsby develop",
+    "publish": "gatsby build && node ./scripts/publish.js"
   },
   "devDependencies": {
     "gatsby-remark-code-titles": "^1.0.2",
@@ -64,12 +64,5 @@
       "prettier --write",
       "git add"
     ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/BoyWithSilverWings/gatsby-blog-starter"
-  },
-  "bugs": {
-    "url": "https://github.com/BoyWithSilverWings/gatsby-blog-starter/issues"
   }
 }
