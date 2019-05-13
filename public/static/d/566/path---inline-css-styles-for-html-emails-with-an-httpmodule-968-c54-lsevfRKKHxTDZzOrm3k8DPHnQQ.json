@@ -1,0 +1,30 @@
+{
+  "data": {
+    "site": {
+      "siteMetadata": {
+        "title": "Intelligible Babble",
+        "author": "Leland Richardson"
+      }
+    },
+    "markdownRemark": null
+  },
+  "pageContext": {
+    "slug": "/inline-css-styles-for-html-emails-with-an-httpmodule/",
+    "previous": {
+      "fields": {
+        "slug": "/3-tricks-to-get-more-out-of-sql-server-in-common-web-scenarios/"
+      },
+      "frontmatter": {
+        "title": "3 Tricks to get More out of SQL Server in Common Web Scenarios"
+      }
+    },
+    "next": {
+      "fields": {
+        "slug": "/_extending-markdownmarkdownsharp-for-jsfiddle-embedding/"
+      },
+      "frontmatter": {
+        "title": "Extending Markdown/MarkdownSharp for jsFiddle Embedding"
+      }
+    }
+  }
+}

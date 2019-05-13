@@ -1,0 +1,30 @@
+{
+  "data": {
+    "site": {
+      "siteMetadata": {
+        "title": "Intelligible Babble",
+        "author": "Leland Richardson"
+      }
+    },
+    "markdownRemark": {
+      "id": "f4079b46-ae61-566d-a945-abccb0878c2c",
+      "excerpt": "",
+      "html": "",
+      "fields": { "readingTime": { "text": "0 min read" } },
+      "frontmatter": { "title": "", "date": null }
+    }
+  },
+  "pageContext": {
+    "slug": "/handling-paged-datasets-in-knockoutjs/",
+    "previous": {
+      "fields": { "slug": "/text-headings/" },
+      "frontmatter": { "title": "Just text and links" }
+    },
+    "next": {
+      "fields": {
+        "slug": "/a-better-query-language-bql-language-specification/"
+      },
+      "frontmatter": { "title": "" }
+    }
+  }
+}

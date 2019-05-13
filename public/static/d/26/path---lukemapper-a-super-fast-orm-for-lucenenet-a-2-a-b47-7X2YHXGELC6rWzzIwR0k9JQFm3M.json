@@ -1,0 +1,25 @@
+{
+  "data": {
+    "site": {
+      "siteMetadata": {
+        "title": "Intelligible Babble",
+        "author": "Leland Richardson"
+      }
+    },
+    "markdownRemark": {
+      "id": "6ab5b53c-d9a5-5810-a83d-28d2a6c83995",
+      "excerpt": "",
+      "html": "",
+      "fields": { "readingTime": { "text": "0 min read" } },
+      "frontmatter": { "title": "", "date": null }
+    }
+  },
+  "pageContext": {
+    "slug": "/lukemapper-a-super-fast-orm-for-lucenenet/",
+    "previous": {
+      "fields": { "slug": "/text-headings/" },
+      "frontmatter": { "title": "Just text and links" }
+    },
+    "next": null
+  }
+}

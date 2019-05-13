@@ -1,0 +1,15 @@
+{
+  "pageContext": {
+    "slug": "/jason-calacanis--epic-rant-on-the-state-of-the-valley/",
+    "previous": {
+      "fields": { "slug": "/clever-way-to-demethodize-native-js-methods/" },
+      "frontmatter": {
+        "title": "Clever way to \"demethodize\" Native JS Methods"
+      }
+    },
+    "next": {
+      "fields": { "slug": "/custom-lucene-tokenizer-for-tech-keywords/" },
+      "frontmatter": { "title": "Custom Lucene Tokenizer for Tech Keywords" }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "pageContext": {
+    "slug": "/building-an-image-uploading--resizing-framework-in-aspnet/",
+    "previous": {
+      "fields": { "slug": "/lukemapper-a-super-fast-orm-for-lucenenet/" },
+      "frontmatter": { "title": "Lukemapper: A Super Fast ORM for Lucene.net" }
+    },
+    "next": {
+      "fields": { "slug": "/handling-paged-datasets-in-knockoutjs/" },
+      "frontmatter": { "title": "Handling Paged Datasets in Knockout.js" }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "data": {
+    "site": {
+      "siteMetadata": {
+        "title": "Intelligible Babble",
+        "author": "Leland Richardson"
+      }
+    },
+    "markdownRemark": null
+  },
+  "pageContext": {
+    "slug": "/creating-a-dictionary-which-doesnt-throw-a-keynotfoundexception/",
+    "previous": {
+      "fields": { "slug": "/hello-world/" },
+      "frontmatter": { "title": "Lets look at some code" }
+    },
+    "next": {
+      "fields": { "slug": "/custom-lucene-tokenizer-for-tech-keywords/" },
+      "frontmatter": { "title": "Just text and links" }
+    }
+  }
+}

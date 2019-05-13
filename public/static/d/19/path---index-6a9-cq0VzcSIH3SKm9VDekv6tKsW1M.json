@@ -1,0 +1,52 @@
+{
+  "data": {
+    "site": { "siteMetadata": { "title": "Gatsby Blog Starter" } },
+    "allMarkdownRemark": {
+      "edges": [
+        {
+          "node": {
+            "id": "c95132a0-85f7-5ee8-8d71-5f64565ffda8",
+            "excerpt": "Kick off your project with this default boilerplate. This starter ships with the main Gatsby configuration files you might need to get up and running blazing…",
+            "fields": {
+              "slug": "/text-headings/",
+              "readingTime": { "text": "4 min read" }
+            },
+            "frontmatter": {
+              "date": "December 25, 2018",
+              "title": "Just text and links"
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "4ea6dc1b-2f49-5ae4-aa69-881d8acf5d13",
+            "excerpt": "This shows an image by Sandy Miller from Unsplash. Here is Firefly from Chai Met Toast",
+            "fields": {
+              "slug": "/here-another/",
+              "readingTime": { "text": "1 min read" }
+            },
+            "frontmatter": {
+              "date": "April 14, 2018",
+              "title": "Images and Embeds"
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "1da43887-57bf-5581-9378-b241ae75f9e6",
+            "excerpt": "Probably because you are using it wrong. If you browse Stackoverflow for React questions, this is one of the most common questions that you will find. Well, it…",
+            "fields": {
+              "slug": "/hello-world/",
+              "readingTime": { "text": "3 min read" }
+            },
+            "frontmatter": {
+              "date": "April 14, 2018",
+              "title": "Lets look at some code"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "pageContext": {}
+}

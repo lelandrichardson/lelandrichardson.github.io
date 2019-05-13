@@ -1,0 +1,17 @@
+{
+  "pageContext": {
+    "slug": "/lukemapper-a-super-fast-orm-for-lucenenet/",
+    "previous": {
+      "fields": { "slug": "/generation-rss-feed-actions-in-aspnet-mvc/" },
+      "frontmatter": { "title": "Generation RSS Feed Actions in ASP.NET MVC" }
+    },
+    "next": {
+      "fields": {
+        "slug": "/building-an-image-uploading--resizing-framework-in-aspnet/"
+      },
+      "frontmatter": {
+        "title": "Building an Image Uploading & Resizing Framework in ASP.Net"
+      }
+    }
+  }
+}

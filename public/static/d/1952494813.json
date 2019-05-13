@@ -1,0 +1,22 @@
+{
+  "data": {
+    "avatar": {
+      "childImageSharp": {
+        "fixed": {
+          "base64": "data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAAUABQDASIAAhEBAxEB/8QAGAABAQEBAQAAAAAAAAAAAAAAAAQDBQb/xAAWAQEBAQAAAAAAAAAAAAAAAAACAQD/2gAMAwEAAhADEAAAAelJNqb3EZnzupNSDf/EABoQAAMBAQEBAAAAAAAAAAAAAAABAgMREhP/2gAIAQEAAQUCrXmOVP6HsztyL3S4ZCpo/8QAFxEAAwEAAAAAAAAAAAAAAAAAABARQf/aAAgBAwEBPwHCv//EABcRAQADAAAAAAAAAAAAAAAAAAABEBH/2gAIAQIBAT8BYmv/xAAbEAACAgMBAAAAAAAAAAAAAAABAgAREBIxUf/aAAgBAQAGPwLYdiU7G+hsa3PJYcYY4//EAB0QAQEAAgEFAAAAAAAAAAAAAAERACExEEFRceH/2gAIAQEAAT8hdVtBTtl8e56nPRYaS6DCYqg82YbGMhlOXHrmYG8oA6+Z/9oADAMBAAIAAwAAABDPL/8A/8QAGBEAAwEBAAAAAAAAAAAAAAAAAAEREFH/2gAIAQMBAT8QUplcFn//xAAYEQEAAwEAAAAAAAAAAAAAAAABABARUf/aAAgBAgEBPxAVSY7b/8QAHxABAQACAQQDAAAAAAAAAAAAAREAIUEQMWFxUYHh/9oACAEBAAE/ECpaj0S7ZzDKpBvJFIKeOOh244GAvLiIxFPKLX7wG0/D+YjVu5feMIUAKujtmvLRh6Z//9k=",
+          "width": 70,
+          "height": 70,
+          "src": "/static/cfd3fe6674d8a7a5c376b67f92dd7f22/4c72c/avatar.jpg",
+          "srcSet": "/static/cfd3fe6674d8a7a5c376b67f92dd7f22/4c72c/avatar.jpg 1x,\n/static/cfd3fe6674d8a7a5c376b67f92dd7f22/bb2c7/avatar.jpg 1.5x,\n/static/cfd3fe6674d8a7a5c376b67f92dd7f22/31a61/avatar.jpg 2x,\n/static/cfd3fe6674d8a7a5c376b67f92dd7f22/107d2/avatar.jpg 3x"
+        }
+      }
+    },
+    "site": {
+      "siteMetadata": {
+        "author": "Leland Richardson",
+        "authorTagline": "Personal blog of Leland Richardson.Software Engineer at Google working on Android. Previously Airbnb.",
+        "social": { "twitter": "intelligibabble" }
+      }
+    }
+  }
+}

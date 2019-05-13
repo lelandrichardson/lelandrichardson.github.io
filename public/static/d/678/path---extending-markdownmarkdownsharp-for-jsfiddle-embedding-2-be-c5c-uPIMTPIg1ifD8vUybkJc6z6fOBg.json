@@ -1,0 +1,19 @@
+{
+  "pageContext": {
+    "slug": "/extending-markdownmarkdownsharp-for-jsfiddle-embedding/",
+    "previous": {
+      "fields": {
+        "slug": "/inline-css-styles-for-html-emails-with-an-httpmodule/"
+      },
+      "frontmatter": {
+        "title": "Inline CSS Styles for HTML Emails with an HttpModule"
+      }
+    },
+    "next": {
+      "fields": { "slug": "/how-to-write-maintainable-jquery-applications/" },
+      "frontmatter": {
+        "title": "How to write Maintainable jQuery Applications"
+      }
+    }
+  }
+}

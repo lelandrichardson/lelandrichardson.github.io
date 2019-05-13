@@ -1,0 +1,10 @@
+{
+  "pageContext": {
+    "slug": "/one-concern-one-file/",
+    "previous": {
+      "fields": { "slug": "/making-reactjs-and-knockoutjs-play-nice/" },
+      "frontmatter": { "title": "Making React.js and Knockout.js Play Nice" }
+    },
+    "next": null
+  }
+}

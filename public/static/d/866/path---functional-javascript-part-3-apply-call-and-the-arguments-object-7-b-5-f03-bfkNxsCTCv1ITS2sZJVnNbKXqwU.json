@@ -1,0 +1,28 @@
+{
+  "data": {
+    "site": {
+      "siteMetadata": {
+        "title": "Intelligible Babble",
+        "author": "Leland Richardson"
+      }
+    },
+    "markdownRemark": {
+      "id": "9d945f3e-a033-555e-be90-bf011be25e86",
+      "excerpt": "",
+      "html": "",
+      "fields": { "readingTime": { "text": "0 min read" } },
+      "frontmatter": { "title": "", "date": null }
+    }
+  },
+  "pageContext": {
+    "slug": "/functional-javascript-part-3-apply-call-and-the-arguments-object/",
+    "previous": {
+      "fields": { "slug": "/text-headings/" },
+      "frontmatter": { "title": "Just text and links" }
+    },
+    "next": {
+      "fields": { "slug": "/functional-javascript-part-4-function-currying/" },
+      "frontmatter": { "title": "" }
+    }
+  }
+}

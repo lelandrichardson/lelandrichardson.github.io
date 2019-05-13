@@ -1,0 +1,26 @@
+{
+  "data": {
+    "site": {
+      "siteMetadata": {
+        "title": "Intelligible Babble",
+        "author": "Leland Richardson"
+      }
+    },
+    "markdownRemark": null
+  },
+  "pageContext": {
+    "slug": "/how-to-write-maintainable-jquery-applications/",
+    "previous": {
+      "fields": {
+        "slug": "/_extending-markdownmarkdownsharp-for-jsfiddle-embedding/"
+      },
+      "frontmatter": {
+        "title": "Extending Markdown/MarkdownSharp for jsFiddle Embedding"
+      }
+    },
+    "next": {
+      "fields": { "slug": "/_generation-rss-feed-actions-in-aspnet-mvc/" },
+      "frontmatter": { "title": "Generation RSS Feed Actions in ASP.NET MVC" }
+    }
+  }
+}

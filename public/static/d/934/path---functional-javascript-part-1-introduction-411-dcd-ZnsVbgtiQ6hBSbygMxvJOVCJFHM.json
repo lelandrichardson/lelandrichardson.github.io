@@ -1,0 +1,30 @@
+{
+  "data": {
+    "site": {
+      "siteMetadata": {
+        "title": "Intelligible Babble",
+        "author": "Leland Richardson"
+      }
+    },
+    "markdownRemark": {
+      "id": "d58fc872-a2ba-5220-a006-7a65aed748f1",
+      "excerpt": "",
+      "html": "",
+      "fields": { "readingTime": { "text": "0 min read" } },
+      "frontmatter": { "title": "", "date": null }
+    }
+  },
+  "pageContext": {
+    "slug": "/functional-javascript-part-1-introduction/",
+    "previous": {
+      "fields": { "slug": "/text-headings/" },
+      "frontmatter": { "title": "Just text and links" }
+    },
+    "next": {
+      "fields": {
+        "slug": "/functional-javascript-part-2-what-makes-a-language-functional/"
+      },
+      "frontmatter": { "title": "" }
+    }
+  }
+}

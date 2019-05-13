@@ -1,0 +1,22 @@
+{
+  "data": {
+    "site": {
+      "siteMetadata": {
+        "title": "Intelligible Babble",
+        "author": "Leland Richardson"
+      }
+    },
+    "markdownRemark": null
+  },
+  "pageContext": {
+    "slug": "/jason-calacanis--epic-rant-on-the-state-of-the-valley/",
+    "previous": {
+      "fields": { "slug": "/generation-rss-feed-actions-in-aspnet-mvc/" },
+      "frontmatter": { "title": "Generation RSS Feed Actions in ASP.NET MVC" }
+    },
+    "next": {
+      "fields": { "slug": "/lukemapper-a-super-fast-orm-for-lucenenet/" },
+      "frontmatter": { "title": "Lukemapper: A Super Fast ORM for Lucene.net" }
+    }
+  }
+}

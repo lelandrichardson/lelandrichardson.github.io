@@ -1,0 +1,28 @@
+{
+  "data": {
+    "site": {
+      "siteMetadata": {
+        "title": "Gatsby Blog Starter",
+        "author": "Boy with Silver Wings"
+      }
+    },
+    "markdownRemark": {
+      "id": "4ea6dc1b-2f49-5ae4-aa69-881d8acf5d13",
+      "excerpt": "This shows an image by Sandy Miller from Unsplash. Here is Firefly from Chai Met Toast",
+      "html": "<p>This shows an image by Sandy Miller from Unsplash.</p>\n<p><a\n    class=\"gatsby-resp-image-link\"\n    href=\"/static/ba26bdec003901409af2a4291fe43d6a/ee5f8/sandy-miller.jpg\"\n    style=\"display: block\"\n    target=\"_blank\"\n    rel=\"noopener\"\n  >\n    <span\n    class=\"gatsby-resp-image-wrapper\"\n    style=\"position: relative; display: block;  max-width: 590px; margin-left: auto; margin-right: auto;\"\n  >\n    <span\n      class=\"gatsby-resp-image-background-image\"\n      style=\"padding-bottom: 66.66666666666666%; position: relative; bottom: 0; left: 0; background-image: url('data:image/jpeg;base64,/9j/2wBDABALDA4MChAODQ4SERATGCgaGBYWGDEjJR0oOjM9PDkzODdASFxOQERXRTc4UG1RV19iZ2hnPk1xeXBkeFxlZ2P/2wBDARESEhgVGC8aGi9jQjhCY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2P/wgARCAANABQDASIAAhEBAxEB/8QAGAAAAwEBAAAAAAAAAAAAAAAAAAMFAgT/xAAVAQEBAAAAAAAAAAAAAAAAAAABAP/aAAwDAQACEAMQAAAB2tXAVInA/wD/xAAZEAEBAAMBAAAAAAAAAAAAAAACAQAREgP/2gAIAQEAAQUC23U4cV6r9UEr1ZdZ/8QAFBEBAAAAAAAAAAAAAAAAAAAAEP/aAAgBAwEBPwE//8QAFBEBAAAAAAAAAAAAAAAAAAAAEP/aAAgBAgEBPwE//8QAGhAAAgMBAQAAAAAAAAAAAAAAAAECETEh4f/aAAgBAQAGPwLTsi44Ui2j0//EABoQAQEBAQADAAAAAAAAAAAAAAERACExYXH/2gAIAQEAAT8hvLwPZzFeHBaqMqM+uoVL70cLn//aAAwDAQACAAMAAAAQ1C//xAAXEQADAQAAAAAAAAAAAAAAAAAAAREh/9oACAEDAQE/EFJpEf/EABYRAQEBAAAAAAAAAAAAAAAAAAEQIf/aAAgBAgEBPxB1n//EABsQAQADAQADAAAAAAAAAAAAAAEAESFBMVHR/9oACAEBAAE/EOCQoMe2LdZy1YeqRSTdlNsbgknlIvsCrJd4p//Z'); background-size: cover; display: block;\"\n    ></span>\n    <img\n        class=\"gatsby-resp-image-image\"\n        style=\"width:100%;height:100%;margin:0;vertical-align:middle;position:absolute;top:0;left:0;box-shadow:inset 0px 0px 0px 400px white;\"\n        alt=\"Image by Sandy Miller\"\n        title=\"\"\n        src=\"/static/ba26bdec003901409af2a4291fe43d6a/1697e/sandy-miller.jpg\"\n        srcset=\"/static/ba26bdec003901409af2a4291fe43d6a/a2cfd/sandy-miller.jpg 148w,\n/static/ba26bdec003901409af2a4291fe43d6a/3348f/sandy-miller.jpg 295w,\n/static/ba26bdec003901409af2a4291fe43d6a/1697e/sandy-miller.jpg 590w,\n/static/ba26bdec003901409af2a4291fe43d6a/6a00a/sandy-miller.jpg 885w,\n/static/ba26bdec003901409af2a4291fe43d6a/46304/sandy-miller.jpg 1180w,\n/static/ba26bdec003901409af2a4291fe43d6a/07574/sandy-miller.jpg 1770w,\n/static/ba26bdec003901409af2a4291fe43d6a/ee5f8/sandy-miller.jpg 5184w\"\n        sizes=\"(max-width: 590px) 100vw, 590px\"\n      />\n  </span>\n  </a></p>\n<p>Here is Firefly from Chai Met Toast</p>\n<div>\n          <div\n            class=\"gatsby-resp-iframe-wrapper\"\n            style=\"padding-bottom: 56.25%; position: relative; height: 0; overflow: hidden;margin-bottom: 1.0725rem\"\n          >\n            <iframe src=\"https://www.youtube.com/embed/Pc-FNBnSplg\" frameborder=\"0\" allow=\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen style=\"\n            position: absolute;\n            top: 0;\n            left: 0;\n            width: 100%;\n            height: 100%;\n          \"></iframe>\n          </div>\n          </div>",
+      "fields": { "readingTime": { "text": "1 min read" } },
+      "frontmatter": { "title": "Images and Embeds", "date": "April 14, 2018" }
+    }
+  },
+  "pageContext": {
+    "slug": "/here-another/",
+    "previous": {
+      "fields": { "slug": "/hello-world/" },
+      "frontmatter": { "title": "Lets look at some code" }
+    },
+    "next": {
+      "fields": { "slug": "/text-headings/" },
+      "frontmatter": { "title": "Just text and links" }
+    }
+  }
+}

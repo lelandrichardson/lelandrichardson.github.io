@@ -1,0 +1,28 @@
+{
+  "data": {
+    "site": {
+      "siteMetadata": {
+        "title": "Intelligible Babble",
+        "author": "Leland Richardson"
+      }
+    },
+    "markdownRemark": {
+      "id": "8bbac953-85b3-5986-adb0-31b8040ca554",
+      "excerpt": "",
+      "html": "",
+      "fields": { "readingTime": { "text": "0 min read" } },
+      "frontmatter": { "title": "", "date": null }
+    }
+  },
+  "pageContext": {
+    "slug": "/how-jquery-and-unobtrusive-javascript-can-be-poisonouse/",
+    "previous": {
+      "fields": { "slug": "/text-headings/" },
+      "frontmatter": { "title": "Just text and links" }
+    },
+    "next": {
+      "fields": { "slug": "/generation-rss-feed-actions-in-aspnet-mvc/" },
+      "frontmatter": { "title": "" }
+    }
+  }
+}

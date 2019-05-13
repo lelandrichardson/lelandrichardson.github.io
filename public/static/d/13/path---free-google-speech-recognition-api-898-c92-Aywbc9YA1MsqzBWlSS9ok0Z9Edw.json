@@ -1,0 +1,30 @@
+{
+  "data": {
+    "site": {
+      "siteMetadata": {
+        "title": "Intelligible Babble",
+        "author": "Leland Richardson"
+      }
+    },
+    "markdownRemark": {
+      "id": "d134a9db-a471-51a4-810f-fa05b8db4c63",
+      "excerpt": "",
+      "html": "",
+      "fields": { "readingTime": { "text": "0 min read" } },
+      "frontmatter": { "title": "", "date": null }
+    }
+  },
+  "pageContext": {
+    "slug": "/free-google-speech-recognition-api/",
+    "previous": {
+      "fields": { "slug": "/text-headings/" },
+      "frontmatter": { "title": "Just text and links" }
+    },
+    "next": {
+      "fields": {
+        "slug": "/3-tricks-to-get-more-out-of-sql-server-in-common-web-scenarios/"
+      },
+      "frontmatter": { "title": "" }
+    }
+  }
+}

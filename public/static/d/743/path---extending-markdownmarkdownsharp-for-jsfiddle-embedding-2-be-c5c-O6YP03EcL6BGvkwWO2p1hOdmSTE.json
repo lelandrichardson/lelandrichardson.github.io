@@ -1,0 +1,28 @@
+{
+  "data": {
+    "site": {
+      "siteMetadata": {
+        "title": "Intelligible Babble",
+        "author": "Leland Richardson"
+      }
+    },
+    "markdownRemark": {
+      "id": "7dd9c581-d29e-5674-a480-b95402101caa",
+      "excerpt": "",
+      "html": "",
+      "fields": { "readingTime": { "text": "0 min read" } },
+      "frontmatter": { "title": "", "date": null }
+    }
+  },
+  "pageContext": {
+    "slug": "/extending-markdownmarkdownsharp-for-jsfiddle-embedding/",
+    "previous": {
+      "fields": { "slug": "/text-headings/" },
+      "frontmatter": { "title": "Just text and links" }
+    },
+    "next": {
+      "fields": { "slug": "/the-future-of-mobile-is-modular-and-this-is-why/" },
+      "frontmatter": { "title": "" }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "data": {
+    "site": {
+      "siteMetadata": {
+        "title": "Intelligible Babble",
+        "author": "Leland Richardson"
+      }
+    },
+    "markdownRemark": {
+      "id": "bd220e98-e015-56ab-a2b9-2eabf5ce9211",
+      "excerpt": "Jason Calacanis  is one of my favorite people to follow in Tech. He has a knack for saying the whole, blatant truth  —  sometimes when…",
+      "html": "<p><a href=\"https://twitter.com/jason\">Jason Calacanis</a> is one of my favorite people to follow in Tech. He has a knack for saying the whole, blatant truth — sometimes when others won’t.</p>\n<p>This last monday night was no exception, where out of nowhere he blasted out a 12-tweet rant, @pmarca style. If you haven’t seen it, you have to check it out:</p>\n<p>$[https://twitter.com/Jason/status/587785109576663040]</p>\n<p>Right off the bat he’s making some pretty big jabs.</p>\n<p>$[https://twitter.com/Jason/status/587785497843380224]</p>\n<p>Sounds a little bit like a bubble, doesn’t it?  Although from a “gut” level I think this is probably true, I wonder if there’s public data to back it up? I’ve tried some brief googling, but haven’t found any charts to support this (although, that could be because the people with the data to make those charts have a vested interest to <em>not</em> show them).</p>\n<p>$[https://twitter.com/Jason/status/587785891638161408]</p>\n<p>$[https://twitter.com/Jason/status/587786493336293376]</p>\n<p>$[https://twitter.com/Jason/status/587786933528461313]</p>\n<p>This is a great quote here, I think. There’s so many behind this idea of “Fail fast” and “pivot”, but I feel like sometimes it misses the mark. The whole “fail fast” thing, to me, means:</p>\n<ol>\n<li>ship fast</li>\n<li>measure</li>\n<li>adjust</li>\n<li>repeat</li>\n</ol>\n<p>This recipe <em>requires</em> perseverance. It entails perfecting a product slowly with quantitative means. Sometimes there is an inherent issue with an idea, and there will just never be a product-market fit, but slow growth does not a bad idea make.  I think everyone is just too used to seeing the “unicorn” startups in the news that blow up right away into an instant success. </p>\n<p>There’s actually a really <a href=\"https://www.youtube.com/watch?v=KYQHPHYs2Os\">humbling talk by Ben Silbermann at Startup School 2012</a> which shows that Pinterest took a lot longer to get popular than everyone thinks.  Most of the insanely successful startups have one thing in common: their founders are <em>ridiculously</em> perseverant. They do whatever it takes to build a great product. </p>\n<p>I think what Jason is getting at here is that there’s more and more startups these days where they are just tossing an idea out there and seeing if it sticks. If not, on to the next idea!  It’s more of a lifestyle than having a passion about an idea.</p>\n<p>OK. Back to the tweetstorm:</p>\n<p>$[https://twitter.com/Jason/status/587787531648761856]</p>\n<blockquote>\n<p>“revenue” &#x26; “breakeven”, lost conscepts for pseudofounders</p>\n</blockquote>\n<p>Let that sink in for a bit. It’s as if the laws of economics just don’t even apply anymore, right?</p>\n<p>VC’s make almost all of their money on the so-called “unicorns” in their portfolio. You know, the ones that end up like Facebook, Twitter, Google, and Pinterest, etc.</p>\n<p>So what does that mean for the founders?  Well it basically means that forgetting terms like “revenue” and “breakeven” are <em>actually what the VCs want you to do</em>. The thing is, unless you are one of those unicorns, it’s not necessarily a smart business move for <em>you</em> because you—unlike the VC’s—are betting on <em>yourself</em> and <em>not</em> the aggregate performance of the portfolio.</p>\n<p>$[https://twitter.com/Jason/status/587788021698727936]</p>\n<p>$[https://twitter.com/Jason/status/587788547916087297]</p>\n<p>$[https://twitter.com/Jason/status/587789097374093312]</p>\n<p>This. If you were going to retweet one of these tweets, it should be this!</p>\n<p>$[https://twitter.com/Jason/status/587789778688483328]</p>\n<p>$[https://twitter.com/Jason/status/587790651053314048]</p>\n<p>$[https://twitter.com/Jason/status/587790911855144961]</p>\n<p>#micdrop</p>\n<p>It’s almost sad that someone like Jason needs to remind us of this.</p>",
+      "fields": { "readingTime": { "text": "3 min read" } },
+      "frontmatter": {
+        "title": "Jason Calacanis' Epic Rant on the State of the Valley",
+        "date": "April 15, 2015"
+      }
+    }
+  },
+  "pageContext": {
+    "slug": "/jason-calacanis--epic-rant-on-the-state-of-the-valley/",
+    "previous": {
+      "fields": { "slug": "/generation-rss-feed-actions-in-aspnet-mvc/" },
+      "frontmatter": { "title": "Generation RSS Feed Actions in ASP.NET MVC" }
+    },
+    "next": {
+      "fields": { "slug": "/lukemapper-a-super-fast-orm-for-lucenenet/" },
+      "frontmatter": { "title": "Lukemapper: A Super Fast ORM for Lucene.net" }
+    }
+  }
+}

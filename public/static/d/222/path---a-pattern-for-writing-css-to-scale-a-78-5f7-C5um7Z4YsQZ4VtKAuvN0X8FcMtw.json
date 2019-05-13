@@ -1,0 +1,26 @@
+{
+  "data": {
+    "site": {
+      "siteMetadata": {
+        "title": "Intelligible Babble",
+        "author": "Leland Richardson"
+      }
+    },
+    "markdownRemark": null
+  },
+  "pageContext": {
+    "slug": "/a-pattern-for-writing-css-to-scale/",
+    "previous": {
+      "fields": { "slug": "/functional-javascript-part-4-function-currying/" },
+      "frontmatter": {
+        "title": "Functional JavaScript, Part 4: Function Currying"
+      }
+    },
+    "next": {
+      "fields": { "slug": "/the-future-of-mobile-is-modular-and-this-is-why/" },
+      "frontmatter": {
+        "title": "The Future of Mobile is Modular and This is Why"
+      }
+    }
+  }
+}

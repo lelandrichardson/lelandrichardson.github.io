@@ -1,0 +1,30 @@
+{
+  "data": {
+    "site": {
+      "siteMetadata": {
+        "title": "Intelligible Babble",
+        "author": "Leland Richardson"
+      }
+    },
+    "markdownRemark": {
+      "id": "82f11951-da8a-57d5-8d42-e758d70e5fe6",
+      "excerpt": "",
+      "html": "",
+      "fields": { "readingTime": { "text": "0 min read" } },
+      "frontmatter": { "title": "", "date": null }
+    }
+  },
+  "pageContext": {
+    "slug": "/a-better-query-language-bql-language-specification/",
+    "previous": {
+      "fields": { "slug": "/text-headings/" },
+      "frontmatter": { "title": "Just text and links" }
+    },
+    "next": {
+      "fields": {
+        "slug": "/creating-a-dictionary-which-doesnt-throw-a-keynotfoundexception/"
+      },
+      "frontmatter": { "title": "" }
+    }
+  }
+}

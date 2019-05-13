@@ -1,0 +1,30 @@
+{
+  "data": {
+    "site": {
+      "siteMetadata": {
+        "title": "Intelligible Babble",
+        "author": "Leland Richardson"
+      }
+    },
+    "markdownRemark": null
+  },
+  "pageContext": {
+    "slug": "/utility-to-generate-large-xml-sitemaps-from-a-database/",
+    "previous": {
+      "fields": {
+        "slug": "/_using-html5-data--tags-with-razor-and-c-anonymous-objects/"
+      },
+      "frontmatter": {
+        "title": "Using HTML5 data-* tags with Razor and C# Anonymous Objects"
+      }
+    },
+    "next": {
+      "fields": {
+        "slug": "/_how-jquery-and-unobtrusive-javascript-can-be-poisonouse/"
+      },
+      "frontmatter": {
+        "title": "How jQuery and \"Unobtrusive JavaScript\" can be Poisonouse"
+      }
+    }
+  }
+}
