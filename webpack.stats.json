@@ -1,0 +1,98 @@
+{
+  "errors": [],
+  "warnings": [],
+  "namedChunkGroups": {
+    "app": {
+      "chunks": [8, 2],
+      "assets": [
+        "webpack-runtime-3b803a0407233ac71e73.js",
+        "webpack-runtime-3b803a0407233ac71e73.js.map",
+        "app.1b56f0f3ea8e10aaf677.css",
+        "app-873de7bb737df1e4d255.js",
+        "app-873de7bb737df1e4d255.js.map"
+      ],
+      "children": {},
+      "childAssets": {}
+    },
+    "component---node-modules-gatsby-plugin-offline-app-shell-js": {
+      "chunks": [3],
+      "assets": [
+        "component---node-modules-gatsby-plugin-offline-app-shell-js-e3ca28e140b315b54f2e.js",
+        "component---node-modules-gatsby-plugin-offline-app-shell-js-e3ca28e140b315b54f2e.js.map"
+      ],
+      "children": {},
+      "childAssets": {}
+    },
+    "component---src-templates-blog-post-js": {
+      "chunks": [0, 1, 6],
+      "assets": [
+        "0-a21edeffd72a969fe347.js",
+        "0-a21edeffd72a969fe347.js.map",
+        "1-633766256462afcfa2e5.js",
+        "1-633766256462afcfa2e5.js.map",
+        "component---src-templates-blog-post-js-1e472f78b066349f98a7.js",
+        "component---src-templates-blog-post-js-1e472f78b066349f98a7.js.map"
+      ],
+      "children": {},
+      "childAssets": {}
+    },
+    "component---src-pages-404-js": {
+      "chunks": [0, 4],
+      "assets": [
+        "0-a21edeffd72a969fe347.js",
+        "0-a21edeffd72a969fe347.js.map",
+        "component---src-pages-404-js-ec67f660d408a2a20253.js",
+        "component---src-pages-404-js-ec67f660d408a2a20253.js.map"
+      ],
+      "children": {},
+      "childAssets": {}
+    },
+    "component---src-pages-index-js": {
+      "chunks": [0, 1, 5],
+      "assets": [
+        "0-a21edeffd72a969fe347.js",
+        "0-a21edeffd72a969fe347.js.map",
+        "1-633766256462afcfa2e5.js",
+        "1-633766256462afcfa2e5.js.map",
+        "component---src-pages-index-js-ab24d5a620ef1e8918f5.js",
+        "component---src-pages-index-js-ab24d5a620ef1e8918f5.js.map"
+      ],
+      "children": {},
+      "childAssets": {}
+    },
+    "pages-manifest": {
+      "chunks": [7],
+      "assets": [
+        "pages-manifest-553ac7f3ecaee0bf25be.js",
+        "pages-manifest-553ac7f3ecaee0bf25be.js.map"
+      ],
+      "children": {},
+      "childAssets": {}
+    }
+  },
+  "assetsByChunkName": {
+    "app": [
+      "webpack-runtime-3b803a0407233ac71e73.js",
+      "app.1b56f0f3ea8e10aaf677.css",
+      "app-873de7bb737df1e4d255.js"
+    ],
+    "component---node-modules-gatsby-plugin-offline-app-shell-js": [
+      "component---node-modules-gatsby-plugin-offline-app-shell-js-e3ca28e140b315b54f2e.js"
+    ],
+    "component---src-templates-blog-post-js": [
+      "0-a21edeffd72a969fe347.js",
+      "1-633766256462afcfa2e5.js",
+      "component---src-templates-blog-post-js-1e472f78b066349f98a7.js"
+    ],
+    "component---src-pages-404-js": [
+      "0-a21edeffd72a969fe347.js",
+      "component---src-pages-404-js-ec67f660d408a2a20253.js"
+    ],
+    "component---src-pages-index-js": [
+      "0-a21edeffd72a969fe347.js",
+      "1-633766256462afcfa2e5.js",
+      "component---src-pages-index-js-ab24d5a620ef1e8918f5.js"
+    ],
+    "pages-manifest": ["pages-manifest-553ac7f3ecaee0bf25be.js"]
+  }
+}
