@@ -1,14 +1,9 @@
 this.workbox = this.workbox || {};
-this.workbox.broadcastUpdate = (function(
-  exports,
-  WorkboxError_mjs,
-  logger_mjs,
-  assert_mjs
-) {
-  "use strict";
+this.workbox.broadcastUpdate = (function (exports,WorkboxError_mjs,logger_mjs,assert_mjs) {
+  'use strict';
 
   try {
-    self.workbox.v["workbox:broadcast-cache-update:3.6.3"] = 1;
+    self.workbox.v['workbox:broadcast-cache-update:3.6.3'] = 1;
   } catch (e) {} // eslint-disable-line
 
   /*
@@ -40,36 +35,19 @@ this.workbox.broadcastUpdate = (function(
    */
   const responsesAreSame = (firstResponse, secondResponse, headersToCheck) => {
     {
-      if (
-        !(
-          firstResponse instanceof Response &&
-          secondResponse instanceof Response
-        )
-      ) {
-        throw new WorkboxError_mjs.WorkboxError(
-          "invalid-responses-are-same-args"
-        );
+      if (!(firstResponse instanceof Response && secondResponse instanceof Response)) {
+        throw new WorkboxError_mjs.WorkboxError('invalid-responses-are-same-args');
       }
     }
 
     const atLeastOneHeaderAvailable = headersToCheck.some(header => {
-      return (
-        firstResponse.headers.has(header) && secondResponse.headers.has(header)
-      );
+      return firstResponse.headers.has(header) && secondResponse.headers.has(header);
     });
 
     if (!atLeastOneHeaderAvailable) {
       {
-        logger_mjs.logger.warn(
-          `Unable to determine where the response has been updated ` +
-            `because none of the headers that would be checked are present.`
-        );
-        logger_mjs.logger.debug(
-          `Attempting to compare the following: `,
-          firstResponse,
-          secondResponse,
-          headersToCheck
-        );
+        logger_mjs.logger.warn(`Unable to determine where the response has been updated ` + `because none of the headers that would be checked are present.`);
+        logger_mjs.logger.debug(`Attempting to compare the following: `, firstResponse, secondResponse, headersToCheck);
       }
 
       // Just return true, indicating the that responses are the same, since we
@@ -78,12 +56,8 @@ this.workbox.broadcastUpdate = (function(
     }
 
     return headersToCheck.every(header => {
-      const headerStateComparison =
-        firstResponse.headers.has(header) ===
-        secondResponse.headers.has(header);
-      const headerValueComparison =
-        firstResponse.headers.get(header) ===
-        secondResponse.headers.get(header);
+      const headerStateComparison = firstResponse.headers.has(header) === secondResponse.headers.has(header);
+      const headerValueComparison = firstResponse.headers.get(header) === secondResponse.headers.get(header);
 
       return headerStateComparison && headerValueComparison;
     });
@@ -105,7 +79,7 @@ this.workbox.broadcastUpdate = (function(
   */
 
   var messageTypes = {
-    CACHE_UPDATED: "CACHE_UPDATED"
+    CACHE_UPDATED: 'CACHE_UPDATED'
   };
 
   /*
@@ -164,40 +138,37 @@ this.workbox.broadcastUpdate = (function(
     // There are browsers which support service workers but don't support the
     // Broadcast Channel API.
     // See https://github.com/GoogleChrome/workbox/issues/1304
-    if (!("BroadcastChannel" in self && channel)) {
+    if (!('BroadcastChannel' in self && channel)) {
       {
-        logger_mjs.logger.debug(
-          `${url} was updated, but the Broadcast Channel API is not ` +
-            `available in the current browser.`
-        );
+        logger_mjs.logger.debug(`${url} was updated, but the Broadcast Channel API is not ` + `available in the current browser.`);
       }
       return;
     }
 
     {
       assert_mjs.assert.isInstance(channel, BroadcastChannel, {
-        moduleName: "workbox-broadcast-cache-update",
-        className: "~",
-        funcName: "broadcastUpdate",
-        paramName: "channel"
+        moduleName: 'workbox-broadcast-cache-update',
+        className: '~',
+        funcName: 'broadcastUpdate',
+        paramName: 'channel'
       });
-      assert_mjs.assert.isType(cacheName, "string", {
-        moduleName: "workbox-broadcast-cache-update",
-        className: "~",
-        funcName: "broadcastUpdate",
-        paramName: "cacheName"
+      assert_mjs.assert.isType(cacheName, 'string', {
+        moduleName: 'workbox-broadcast-cache-update',
+        className: '~',
+        funcName: 'broadcastUpdate',
+        paramName: 'cacheName'
       });
-      assert_mjs.assert.isType(url, "string", {
-        moduleName: "workbox-broadcast-cache-update",
-        className: "~",
-        funcName: "broadcastUpdate",
-        paramName: "url"
+      assert_mjs.assert.isType(url, 'string', {
+        moduleName: 'workbox-broadcast-cache-update',
+        className: '~',
+        funcName: 'broadcastUpdate',
+        paramName: 'url'
       });
-      assert_mjs.assert.isType(source, "string", {
-        moduleName: "workbox-broadcast-cache-update",
-        className: "~",
-        funcName: "broadcastUpdate",
-        paramName: "source"
+      assert_mjs.assert.isType(source, 'string', {
+        moduleName: 'workbox-broadcast-cache-update',
+        className: '~',
+        funcName: 'broadcastUpdate',
+        paramName: 'source'
       });
     }
 
@@ -252,18 +223,14 @@ this.workbox.broadcastUpdate = (function(
      */
     constructor(channelName, { headersToCheck, source } = {}) {
       {
-        if (typeof channelName !== "string" || channelName.length === 0) {
-          throw new WorkboxError_mjs.WorkboxError("channel-name-required");
+        if (typeof channelName !== 'string' || channelName.length === 0) {
+          throw new WorkboxError_mjs.WorkboxError('channel-name-required');
         }
       }
 
       this._channelName = channelName;
-      this._headersToCheck = headersToCheck || [
-        "content-length",
-        "etag",
-        "last-modified"
-      ];
-      this._source = source || "workbox-broadcast-cache-update";
+      this._headersToCheck = headersToCheck || ['content-length', 'etag', 'last-modified'];
+      this._source = source || 'workbox-broadcast-cache-update';
 
       // TODO assert typeof headersToCheck instanceof Array
     }
@@ -276,7 +243,7 @@ this.workbox.broadcastUpdate = (function(
      * @private
      */
     _getChannel() {
-      if ("BroadcastChannel" in self && !this._channel) {
+      if ('BroadcastChannel' in self && !this._channel) {
         this._channel = new BroadcastChannel(this._channelName);
       }
       return this._channel;
@@ -297,9 +264,7 @@ this.workbox.broadcastUpdate = (function(
      * This is included in the message posted on the broadcast channel.
      */
     notifyIfUpdated(firstResponse, secondResponse, url, cacheName) {
-      if (
-        !responsesAreSame(firstResponse, secondResponse, this._headersToCheck)
-      ) {
+      if (!responsesAreSame(firstResponse, secondResponse, this._headersToCheck)) {
         broadcastUpdate(this._getChannel(), cacheName, url, this._source);
       }
     }
@@ -328,19 +293,19 @@ this.workbox.broadcastUpdate = (function(
    */
   class Plugin {
     /**
-     * Construct a new instance with a specific `channelName` to
-     * broadcast messages on
-     *
-     * @param {string} channelName The name that will be used when creating
-     * the `BroadcastChannel`.
-     * @param {Object} options
-     * @param {Array<string>}
-     * [options.headersToCheck=['content-length', 'etag', 'last-modified']] A
-     * list of headers that will be used to determine whether the responses
-     * differ.
-     * @param {string} [options.source='workbox-broadcast-cache-update'] An
-     * attribution value that indicates where the update originated.
-     */
+    * Construct a new instance with a specific `channelName` to
+    * broadcast messages on
+    *
+    * @param {string} channelName The name that will be used when creating
+    * the `BroadcastChannel`.
+    * @param {Object} options
+    * @param {Array<string>}
+    * [options.headersToCheck=['content-length', 'etag', 'last-modified']] A
+    * list of headers that will be used to determine whether the responses
+    * differ.
+    * @param {string} [options.source='workbox-broadcast-cache-update'] An
+    * attribution value that indicates where the update originated.
+    */
     constructor(channelName, options) {
       this._broadcastUpdate = new BroadcastCacheUpdate(channelName, options);
     }
@@ -357,23 +322,23 @@ this.workbox.broadcastUpdate = (function(
      */
     cacheDidUpdate({ cacheName, oldResponse, newResponse, request }) {
       {
-        assert_mjs.assert.isType(cacheName, "string", {
-          moduleName: "workbox-broadcast-cache-update",
-          className: "Plugin",
-          funcName: "cacheDidUpdate",
-          paramName: "cacheName"
+        assert_mjs.assert.isType(cacheName, 'string', {
+          moduleName: 'workbox-broadcast-cache-update',
+          className: 'Plugin',
+          funcName: 'cacheDidUpdate',
+          paramName: 'cacheName'
         });
         assert_mjs.assert.isInstance(newResponse, Response, {
-          moduleName: "workbox-broadcast-cache-update",
-          className: "Plugin",
-          funcName: "cacheDidUpdate",
-          paramName: "newResponse"
+          moduleName: 'workbox-broadcast-cache-update',
+          className: 'Plugin',
+          funcName: 'cacheDidUpdate',
+          paramName: 'newResponse'
         });
         assert_mjs.assert.isInstance(request, Request, {
-          moduleName: "workbox-broadcast-cache-update",
-          className: "Plugin",
-          funcName: "cacheDidUpdate",
-          paramName: "request"
+          moduleName: 'workbox-broadcast-cache-update',
+          className: 'Plugin',
+          funcName: 'cacheDidUpdate',
+          paramName: 'request'
         });
       }
 
@@ -382,12 +347,7 @@ this.workbox.broadcastUpdate = (function(
         return;
       }
 
-      this._broadcastUpdate.notifyIfUpdated(
-        oldResponse,
-        newResponse,
-        request.url,
-        cacheName
-      );
+      this._broadcastUpdate.notifyIfUpdated(oldResponse, newResponse, request.url, cacheName);
     }
   }
 
@@ -429,6 +389,7 @@ this.workbox.broadcastUpdate = (function(
   exports.messageTypes = messageTypes;
 
   return exports;
-})({}, workbox.core._private, workbox.core._private, workbox.core._private);
+
+}({},workbox.core._private,workbox.core._private,workbox.core._private));
 
 //# sourceMappingURL=workbox-broadcast-cache-update.dev.js.map

@@ -1,0 +1,21 @@
+{
+  "pageContext": {
+    "slug": "/_free-google-speech-recognition-api/",
+    "previous": {
+      "fields": {
+        "slug": "/_generic-method-to-safely-perform-cross-thread-invoke/"
+      },
+      "frontmatter": {
+        "title": "Generic Method to Safely Perform Cross-Thread Invoke"
+      }
+    },
+    "next": {
+      "fields": {
+        "slug": "/_using-html5-data--tags-with-razor-and-c-anonymous-objects/"
+      },
+      "frontmatter": {
+        "title": "Using HTML5 data-* tags with Razor and C# Anonymous Objects"
+      }
+    }
+  }
+}

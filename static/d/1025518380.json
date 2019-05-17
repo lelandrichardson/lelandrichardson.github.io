@@ -1,11 +1,1 @@
-{
-  "data": {
-    "site": {
-      "siteMetadata": {
-        "title": "Intelligible Babble",
-        "description": "Personal blog of Leland Richardson.",
-        "author": "Leland Richardson"
-      }
-    }
-  }
-}
+{"data":{"site":{"siteMetadata":{"title":"Intelligible Babble","description":"Personal blog of Leland Richardson.","author":"Leland Richardson"}}}}

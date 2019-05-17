@@ -1,0 +1,21 @@
+{
+  "pageContext": {
+    "slug": "/_how-jquery-and-unobtrusive-javascript-can-be-poisonouse/",
+    "previous": {
+      "fields": {
+        "slug": "/_utility-to-generate-large-xml-sitemaps-from-a-database/"
+      },
+      "frontmatter": {
+        "title": "Utility to generate large XML Sitemaps from a Database"
+      }
+    },
+    "next": {
+      "fields": {
+        "slug": "/3-tricks-to-get-more-out-of-sql-server-in-common-web-scenarios/"
+      },
+      "frontmatter": {
+        "title": "3 Tricks to get More out of SQL Server in Common Web Scenarios"
+      }
+    }
+  }
+}

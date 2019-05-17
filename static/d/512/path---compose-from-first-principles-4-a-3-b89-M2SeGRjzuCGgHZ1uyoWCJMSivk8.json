@@ -1,0 +1,25 @@
+{
+  "data": {
+    "site": {
+      "siteMetadata": {
+        "title": "Intelligible Babble",
+        "author": "Leland Richardson"
+      }
+    },
+    "markdownRemark": {
+      "id": "a575ff0a-7d38-5156-b71a-1567c735799f",
+      "excerpt": "",
+      "html": "",
+      "fields": { "readingTime": { "text": "0 min read" } },
+      "frontmatter": { "title": "", "date": null }
+    }
+  },
+  "pageContext": {
+    "slug": "/compose-from-first-principles/",
+    "previous": {
+      "fields": { "slug": "/one-concern-one-file/" },
+      "frontmatter": { "title": "One Concern, One File" }
+    },
+    "next": null
+  }
+}

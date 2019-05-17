@@ -1,15 +1,9 @@
 this.workbox = this.workbox || {};
-this.workbox.backgroundSync = (function(
-  DBWrapper_mjs,
-  WorkboxError_mjs,
-  logger_mjs,
-  assert_mjs,
-  getFriendlyURL_mjs
-) {
-  "use strict";
+this.workbox.backgroundSync = (function (DBWrapper_mjs,WorkboxError_mjs,logger_mjs,assert_mjs,getFriendlyURL_mjs) {
+  'use strict';
 
   try {
-    self.workbox.v["workbox:background-sync:3.6.3"] = 1;
+    self.workbox.v['workbox:background-sync:3.6.3'] = 1;
   } catch (e) {} // eslint-disable-line
 
   /*
@@ -27,17 +21,7 @@ this.workbox.backgroundSync = (function(
    limitations under the License.
   */
 
-  const serializableProperties = [
-    "method",
-    "referrer",
-    "referrerPolicy",
-    "mode",
-    "credentials",
-    "cache",
-    "redirect",
-    "integrity",
-    "keepalive"
-  ];
+  const serializableProperties = ['method', 'referrer', 'referrerPolicy', 'mode', 'credentials', 'cache', 'redirect', 'integrity', 'keepalive'];
 
   /**
    * A class to make it easier to serialize and de-serialize requests so they
@@ -56,11 +40,11 @@ this.workbox.backgroundSync = (function(
      * @private
      */
     static fromRequest(request) {
-      return babelHelpers.asyncToGenerator(function*() {
+      return babelHelpers.asyncToGenerator(function* () {
         const requestInit = { headers: {} };
 
         // Set the body if present.
-        if (request.method !== "GET") {
+        if (request.method !== 'GET') {
           // Use blob to support non-text request bodies,
           // and clone first in case the caller still needs the request.
           requestInit.body = yield request.clone().blob();
@@ -178,10 +162,10 @@ this.workbox.backgroundSync = (function(
    limitations under the License.
   */
 
-  const DB_NAME = "workbox-background-sync";
-  const OBJECT_STORE_NAME = "requests";
-  const INDEXED_PROP = "queueName";
-  const TAG_PREFIX = "workbox-background-sync";
+  const DB_NAME = 'workbox-background-sync';
+  const OBJECT_STORE_NAME = 'requests';
+  const INDEXED_PROP = 'queueName';
+  const TAG_PREFIX = 'workbox-background-sync';
   const MAX_RETENTION_TIME = 60 * 24 * 7; // 7 days in minutes
 
   /*
@@ -217,10 +201,7 @@ this.workbox.backgroundSync = (function(
     constructor(queue) {
       this._queue = queue;
       this._db = new DBWrapper_mjs.DBWrapper(DB_NAME, 1, {
-        onupgradeneeded: evt =>
-          evt.target.result
-            .createObjectStore(OBJECT_STORE_NAME, { autoIncrement: true })
-            .createIndex(INDEXED_PROP, INDEXED_PROP, { unique: false })
+        onupgradeneeded: evt => evt.target.result.createObjectStore(OBJECT_STORE_NAME, { autoIncrement: true }).createIndex(INDEXED_PROP, INDEXED_PROP, { unique: false })
       });
     }
 
@@ -235,7 +216,7 @@ this.workbox.backgroundSync = (function(
     addEntry(storableRequest) {
       var _this = this;
 
-      return babelHelpers.asyncToGenerator(function*() {
+      return babelHelpers.asyncToGenerator(function* () {
         yield _this._db.add(OBJECT_STORE_NAME, {
           queueName: _this._queue.name,
           storableRequest: storableRequest.toObject()
@@ -255,7 +236,7 @@ this.workbox.backgroundSync = (function(
     getAndRemoveOldestEntry() {
       var _this2 = this;
 
-      return babelHelpers.asyncToGenerator(function*() {
+      return babelHelpers.asyncToGenerator(function* () {
         const [entry] = yield _this2._db.getAllMatching(OBJECT_STORE_NAME, {
           index: INDEXED_PROP,
           query: IDBKeyRange.only(_this2._queue.name),
@@ -322,15 +303,13 @@ this.workbox.backgroundSync = (function(
      *     minutes) a request may be retried. After this amount of time has
      *     passed, the request will be deleted from the queue.
      */
-    constructor(
-      name,
-      { callbacks = {}, maxRetentionTime = MAX_RETENTION_TIME } = {}
-    ) {
+    constructor(name, {
+      callbacks = {},
+      maxRetentionTime = MAX_RETENTION_TIME
+    } = {}) {
       // Ensure the store name is not already being used
       if (queueNames.has(name)) {
-        throw new WorkboxError_mjs.WorkboxError("duplicate-queue-name", {
-          name
-        });
+        throw new WorkboxError_mjs.WorkboxError('duplicate-queue-name', { name });
       } else {
         queueNames.add(name);
       }
@@ -360,25 +339,22 @@ this.workbox.backgroundSync = (function(
     addRequest(request) {
       var _this = this;
 
-      return babelHelpers.asyncToGenerator(function*() {
+      return babelHelpers.asyncToGenerator(function* () {
         {
           assert_mjs.assert.isInstance(request, Request, {
-            moduleName: "workbox-background-sync",
-            className: "Queue",
-            funcName: "addRequest",
-            paramName: "request"
+            moduleName: 'workbox-background-sync',
+            className: 'Queue',
+            funcName: 'addRequest',
+            paramName: 'request'
           });
         }
 
-        const storableRequest = yield StorableRequest.fromRequest(
-          request.clone()
-        );
-        yield _this._runCallback("requestWillEnqueue", storableRequest);
+        const storableRequest = yield StorableRequest.fromRequest(request.clone());
+        yield _this._runCallback('requestWillEnqueue', storableRequest);
         yield _this._queueStore.addEntry(storableRequest);
         yield _this._registerSync();
         {
-          logger_mjs
-            .logger.log(`Request for '${getFriendlyURL_mjs.getFriendlyURL(storableRequest.url)}' has been
+          logger_mjs.logger.log(`Request for '${getFriendlyURL_mjs.getFriendlyURL(storableRequest.url)}' has been
           added to background sync queue '${_this._name}'.`);
         }
       })();
@@ -394,15 +370,13 @@ this.workbox.backgroundSync = (function(
     replayRequests() {
       var _this2 = this;
 
-      return babelHelpers.asyncToGenerator(function*() {
+      return babelHelpers.asyncToGenerator(function* () {
         const now = Date.now();
         const replayedRequests = [];
         const failedRequests = [];
 
         let storableRequest;
-        while (
-          (storableRequest = yield _this2._queueStore.getAndRemoveOldestEntry())
-        ) {
+        while (storableRequest = yield _this2._queueStore.getAndRemoveOldestEntry()) {
           // Make a copy so the unmodified request can be stored
           // in the event of a replay failure.
           const storableRequestClone = storableRequest.clone();
@@ -413,7 +387,7 @@ this.workbox.backgroundSync = (function(
             continue;
           }
 
-          yield _this2._runCallback("requestWillReplay", storableRequest);
+          yield _this2._runCallback('requestWillReplay', storableRequest);
 
           const replay = { request: storableRequest.toRequest() };
 
@@ -421,18 +395,12 @@ this.workbox.backgroundSync = (function(
             // Clone the request before fetching so callbacks get an unused one.
             replay.response = yield fetch(replay.request.clone());
             {
-              logger_mjs.logger
-                .log(`Request for '${getFriendlyURL_mjs.getFriendlyURL(
-                storableRequest.url
-              )}'
+              logger_mjs.logger.log(`Request for '${getFriendlyURL_mjs.getFriendlyURL(storableRequest.url)}'
              has been replayed`);
             }
           } catch (err) {
             {
-              logger_mjs.logger
-                .log(`Request for '${getFriendlyURL_mjs.getFriendlyURL(
-                storableRequest.url
-              )}'
+              logger_mjs.logger.log(`Request for '${getFriendlyURL_mjs.getFriendlyURL(storableRequest.url)}'
              failed to replay`);
             }
             replay.error = err;
@@ -442,21 +410,16 @@ this.workbox.backgroundSync = (function(
           replayedRequests.push(replay);
         }
 
-        yield _this2._runCallback("queueDidReplay", replayedRequests);
+        yield _this2._runCallback('queueDidReplay', replayedRequests);
 
         // If any requests failed, put the failed requests back in the queue
         // and rethrow the failed requests count.
         if (failedRequests.length) {
-          yield Promise.all(
-            failedRequests.map(function(storableRequest) {
-              return _this2._queueStore.addEntry(storableRequest);
-            })
-          );
+          yield Promise.all(failedRequests.map(function (storableRequest) {
+            return _this2._queueStore.addEntry(storableRequest);
+          }));
 
-          throw new WorkboxError_mjs.WorkboxError("queue-replay-failed", {
-            name: _this2._name,
-            count: failedRequests.length
-          });
+          throw new WorkboxError_mjs.WorkboxError('queue-replay-failed', { name: _this2._name, count: failedRequests.length });
         }
       })();
     }
@@ -471,8 +434,8 @@ this.workbox.backgroundSync = (function(
     _runCallback(name, ...args) {
       var _this3 = this;
 
-      return babelHelpers.asyncToGenerator(function*() {
-        if (typeof _this3._callbacks[name] === "function") {
+      return babelHelpers.asyncToGenerator(function* () {
+        if (typeof _this3._callbacks[name] === 'function') {
           yield _this3._callbacks[name].apply(null, args);
         }
       })();
@@ -486,8 +449,8 @@ this.workbox.backgroundSync = (function(
      * @private
      */
     _addSyncListener() {
-      if ("sync" in registration) {
-        self.addEventListener("sync", event => {
+      if ('sync' in registration) {
+        self.addEventListener('sync', event => {
           if (event.tag === `${TAG_PREFIX}:${this._name}`) {
             {
               logger_mjs.logger.log(`Background sync for tag '${event.tag}'
@@ -498,9 +461,7 @@ this.workbox.backgroundSync = (function(
         });
       } else {
         {
-          logger_mjs.logger.log(
-            `Background sync replaying without background sync event`
-          );
+          logger_mjs.logger.log(`Background sync replaying without background sync event`);
         }
         // If the browser doesn't support background sync, retry
         // every time the service worker starts up as a fallback.
@@ -516,18 +477,15 @@ this.workbox.backgroundSync = (function(
     _registerSync() {
       var _this4 = this;
 
-      return babelHelpers.asyncToGenerator(function*() {
-        if ("sync" in registration) {
+      return babelHelpers.asyncToGenerator(function* () {
+        if ('sync' in registration) {
           try {
             yield registration.sync.register(`${TAG_PREFIX}:${_this4._name}`);
           } catch (err) {
             // This means the registration failed for some reason, possibly due to
             // the user disabling it.
             {
-              logger_mjs.logger.warn(
-                `Unable to register sync event for '${_this4._name}'.`,
-                err
-              );
+              logger_mjs.logger.warn(`Unable to register sync event for '${_this4._name}'.`, err);
             }
           }
         }
@@ -587,7 +545,7 @@ this.workbox.backgroundSync = (function(
     fetchDidFail({ request }) {
       var _this = this;
 
-      return babelHelpers.asyncToGenerator(function*() {
+      return babelHelpers.asyncToGenerator(function* () {
         yield _this._queue.addRequest(request);
       })();
     }
@@ -608,7 +566,7 @@ this.workbox.backgroundSync = (function(
    limitations under the License.
   */
 
-  var publicAPI = /*#__PURE__*/ Object.freeze({
+  var publicAPI = /*#__PURE__*/Object.freeze({
     Queue: Queue,
     Plugin: Plugin
   });
@@ -629,12 +587,7 @@ this.workbox.backgroundSync = (function(
   */
 
   return publicAPI;
-})(
-  workbox.core._private,
-  workbox.core._private,
-  workbox.core._private,
-  workbox.core._private,
-  workbox.core._private
-);
+
+}(workbox.core._private,workbox.core._private,workbox.core._private,workbox.core._private,workbox.core._private));
 
 //# sourceMappingURL=workbox-background-sync.dev.js.map

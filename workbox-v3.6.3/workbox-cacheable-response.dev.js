@@ -1,15 +1,9 @@
 this.workbox = this.workbox || {};
-this.workbox.cacheableResponse = (function(
-  exports,
-  WorkboxError_mjs,
-  assert_mjs,
-  getFriendlyURL_mjs,
-  logger_mjs
-) {
-  "use strict";
+this.workbox.cacheableResponse = (function (exports,WorkboxError_mjs,assert_mjs,getFriendlyURL_mjs,logger_mjs) {
+  'use strict';
 
   try {
-    self.workbox.v["workbox:cacheable-response:3.6.3"] = 1;
+    self.workbox.v['workbox:cacheable-response:3.6.3'] = 1;
   } catch (e) {} // eslint-disable-line
 
   /*
@@ -54,31 +48,28 @@ this.workbox.cacheableResponse = (function(
     constructor(config = {}) {
       {
         if (!(config.statuses || config.headers)) {
-          throw new WorkboxError_mjs.WorkboxError(
-            "statuses-or-headers-required",
-            {
-              moduleName: "workbox-cacheable-response",
-              className: "CacheableResponse",
-              funcName: "constructor"
-            }
-          );
+          throw new WorkboxError_mjs.WorkboxError('statuses-or-headers-required', {
+            moduleName: 'workbox-cacheable-response',
+            className: 'CacheableResponse',
+            funcName: 'constructor'
+          });
         }
 
         if (config.statuses) {
           assert_mjs.assert.isArray(config.statuses, {
-            moduleName: "workbox-cacheable-response",
-            className: "CacheableResponse",
-            funcName: "constructor",
-            paramName: "config.statuses"
+            moduleName: 'workbox-cacheable-response',
+            className: 'CacheableResponse',
+            funcName: 'constructor',
+            paramName: 'config.statuses'
           });
         }
 
         if (config.headers) {
-          assert_mjs.assert.isType(config.headers, "object", {
-            moduleName: "workbox-cacheable-response",
-            className: "CacheableResponse",
-            funcName: "constructor",
-            paramName: "config.headers"
+          assert_mjs.assert.isType(config.headers, 'object', {
+            moduleName: 'workbox-cacheable-response',
+            className: 'CacheableResponse',
+            funcName: 'constructor',
+            paramName: 'config.headers'
           });
         }
       }
@@ -99,10 +90,10 @@ this.workbox.cacheableResponse = (function(
     isResponseCacheable(response) {
       {
         assert_mjs.assert.isInstance(response, Response, {
-          moduleName: "workbox-cacheable-response",
-          className: "CacheableResponse",
-          funcName: "isResponseCacheable",
-          paramName: "response"
+          moduleName: 'workbox-cacheable-response',
+          className: 'CacheableResponse',
+          funcName: 'isResponseCacheable',
+          paramName: 'response'
         });
       }
 
@@ -120,21 +111,11 @@ this.workbox.cacheableResponse = (function(
 
       {
         if (!cacheable) {
-          logger_mjs.logger.groupCollapsed(
-            `The request for ` +
-              `'${getFriendlyURL_mjs.getFriendlyURL(
-                response.url
-              )}' returned a response that does ` +
-              `not meet the criteria for being cached.`
-          );
+          logger_mjs.logger.groupCollapsed(`The request for ` + `'${getFriendlyURL_mjs.getFriendlyURL(response.url)}' returned a response that does ` + `not meet the criteria for being cached.`);
 
           logger_mjs.logger.groupCollapsed(`View cacheability criteria here.`);
-          logger_mjs.logger.unprefixed.log(
-            `Cacheable statuses: ` + JSON.stringify(this._statuses)
-          );
-          logger_mjs.logger.unprefixed.log(
-            `Cacheable headers: ` + JSON.stringify(this._headers, null, 2)
-          );
+          logger_mjs.logger.unprefixed.log(`Cacheable statuses: ` + JSON.stringify(this._statuses));
+          logger_mjs.logger.unprefixed.log(`Cacheable headers: ` + JSON.stringify(this._headers, null, 2));
           logger_mjs.logger.groupEnd();
 
           const logFriendlyHeaders = {};
@@ -142,15 +123,9 @@ this.workbox.cacheableResponse = (function(
             logFriendlyHeaders[key] = value;
           });
 
-          logger_mjs.logger.groupCollapsed(
-            `View response status and headers here.`
-          );
-          logger_mjs.logger.unprefixed.log(
-            `Response status: ` + response.status
-          );
-          logger_mjs.logger.unprefixed.log(
-            `Response headers: ` + JSON.stringify(logFriendlyHeaders, null, 2)
-          );
+          logger_mjs.logger.groupCollapsed(`View response status and headers here.`);
+          logger_mjs.logger.unprefixed.log(`Response status: ` + response.status);
+          logger_mjs.logger.unprefixed.log(`Response headers: ` + JSON.stringify(logFriendlyHeaders, null, 2));
           logger_mjs.logger.groupEnd();
 
           logger_mjs.logger.groupCollapsed(`View full response details here.`);
@@ -255,12 +230,7 @@ this.workbox.cacheableResponse = (function(
   exports.Plugin = Plugin;
 
   return exports;
-})(
-  {},
-  workbox.core._private,
-  workbox.core._private,
-  workbox.core._private,
-  workbox.core._private
-);
+
+}({},workbox.core._private,workbox.core._private,workbox.core._private,workbox.core._private));
 
 //# sourceMappingURL=workbox-cacheable-response.dev.js.map
