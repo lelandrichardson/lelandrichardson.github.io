@@ -1,0 +1,17 @@
+{
+  "pageContext": {
+    "slug": "/custom-lucene-tokenizer-for-tech-keywords/",
+    "previous": {
+      "fields": {
+        "slug": "/_jason-calacanis--epic-rant-on-the-state-of-the-valley/"
+      },
+      "frontmatter": {
+        "title": "Jason Calacanis' Epic Rant on the State of the Valley"
+      }
+    },
+    "next": {
+      "fields": { "slug": "/making-reactjs-and-knockoutjs-play-nice/" },
+      "frontmatter": { "title": "Making React.js and Knockout.js Play Nice" }
+    }
+  }
+}

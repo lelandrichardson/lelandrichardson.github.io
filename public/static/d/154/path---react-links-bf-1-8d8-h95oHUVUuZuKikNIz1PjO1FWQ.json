@@ -1,0 +1,19 @@
+{
+  "data": {
+    "site": {
+      "siteMetadata": {
+        "title": "Intelligible Babble",
+        "author": "Leland Richardson"
+      }
+    },
+    "markdownRemark": null
+  },
+  "pageContext": {
+    "slug": "/react-links/",
+    "previous": {
+      "fields": { "slug": "/compose-from-first-principles/" },
+      "frontmatter": { "title": "Compose From First Principles" }
+    },
+    "next": null
+  }
+}

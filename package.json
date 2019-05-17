@@ -49,6 +49,7 @@
     "publish": "gatsby build && node ./scripts/publish.js"
   },
   "devDependencies": {
+    "gatsby-plugin-feed": "^2.2.0",
     "gatsby-remark-code-titles": "^1.0.2",
     "husky": "^1.2.1",
     "lint-staged": "^8.1.0",

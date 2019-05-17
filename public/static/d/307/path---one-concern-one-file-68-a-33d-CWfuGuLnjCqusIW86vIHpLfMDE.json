@@ -1,0 +1,13 @@
+{
+  "pageContext": {
+    "slug": "/one-concern-one-file/",
+    "previous": {
+      "fields": { "slug": "/making-reactjs-and-knockoutjs-play-nice/" },
+      "frontmatter": { "title": "Making React.js and Knockout.js Play Nice" }
+    },
+    "next": {
+      "fields": { "slug": "/compose-from-first-principles/" },
+      "frontmatter": { "title": "Compose From First Principles" }
+    }
+  }
+}

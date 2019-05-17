@@ -6,6 +6,7 @@ import StyledLink from "../utils/styled-link";
 import media from "../utils/media";
 import Twitter from "../images/social/twitter.svg";
 import Github from "../images/social/github.svg";
+import Rss from "../images/social/rss.svg";
 
 const Container = styled.nav`
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
@@ -52,6 +53,9 @@ const Header = ({ title }) => (
       rel="noopener noreferrer"
     >
       <Icon src={Github} alt="github" />
+    </a>
+    <a href={`/rss.xml`} rel="alternate" type="application/rss+xml">
+      <Icon src={Rss} alt="Rss Feed" />
     </a>
   </Container>
 );
