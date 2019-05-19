@@ -20,15 +20,17 @@ If you haven't yet watched the [session on Declarative UI Patterns](https://www.
 
 Since we've announced and [open sourced Compose](http://d.android.com/jetpackcompose), it has generated a lot of interest and questions about how it works. I spent some time thinking about what the right thing to talk about first would be.
 
-The goal of this post is to give people a solid mental model around what Compose _does_, and eliminate anything one might think of as "magic". One of the best ways to do this, I think, is to try and construct a simpler version of what we're doing, and incrementally add on to it until we have something that mostly resembles the real thing. In other words, let's try and build Compose starting from nothing but "first principles".
+The goal of this post is to give people a solid mental model around what Compose _does_, and eliminate anything one might think of as "magic". One of the best ways to do this, I think, is to try and construct a simpler version of what we're doing, and incrementally add on to it until we have something that resembles the real thing. In other words, let's try and build Compose starting from nothing but "first principles".
 
 In this post I am not going to try to convince you of the motivations behind this architecture or the project overall; I'm only trying to help explain the _what_ and not the _why_. I'm also assuming that the reader of this post is familiar with the [Kotlin Programming Language](https://kotlinlang.org/docs/reference/) and in particular [Extension Functions](https://kotlinlang.org/docs/reference/extensions.html).
+
+Finally, if it wasn't clear already, _code snippets in this post will not be reflective of what code targetting Compose will look like_.
 
 ## UIs are Trees
 
 At its core, Compose is designed to efficiently build _and maintain_ tree-like data structures. More specifically, it provides a programming model to describe how that tree will _change over time_.
 
-This programming model is not entirely new. We've gotten a lot of inspiration from other frameworks such as [React](https://reactjs.org/), [Litho](https://fblitho.com/), [Vue](https://vuejs.org/), [Flutter](https://flutter.dev/), and more, all of which mostly accomplish the same goal, albeit in slightly different ways.
+This programming model is not entirely new. We've had a lot of inspiration from other frameworks such as [React](https://reactjs.org/), [Litho](https://fblitho.com/), [Vue](https://vuejs.org/), [Flutter](https://flutter.dev/), and more, all of which mostly accomplish the same goal, albeit in slightly different ways.
 
 As one might surmise from the list of frameworks above, one of the more compelling use cases for this type of a system is to build user interfaces (UIs). UIs are typically tree-like data structures that change over time. Moreover, UIs are becoming more and more dynamic and complicated, resulting in demand for a programming model to help tame that complexity.
 
@@ -48,9 +50,9 @@ class Box : Node()
 class Text(var text: String) : Node()
 ```
 
-Here we just have two primitives: `Box` and `Text`. In reality there would probably be more, and they would probably have more properties and methods etc., but again, we are keeping it simple. In the existing Android toolkit, this would correspond to [`View`](https://developer.android.com/reference/android/view/View) and all of its subclasses, and on the web this would correspond to any [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element).
+Here we just have two primitives: `Box` and `Text`. In reality, there would probably be more, and they would probably have more properties and methods, etc., but again, we are keeping it simple. In the existing Android toolkit, this would correspond to [`View`](https://developer.android.com/reference/android/view/View) and all of its subclasses, and on the web this would correspond to any [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element).
 
-Now we need a way to take a tree of Nodes, and render them to pixels on the screen. How this is done isn't important, so let's just assume we have a function of the following shape:
+Now we need a way to take a tree of Nodes and render them to pixels on the screen. How this is done isn't important, so let's just assume we have a function of the following shape:
 
 ```kotlin
 fun renderNodeToScreen(node: Node) { /* ... */ }
@@ -68,7 +70,7 @@ Let's move on to a slightly more complex example of a "To Do List" App.
 
 ## UI as a Transform Function
 
-A practical guiding principle to structuring an application is to separate the concept of a "model" from that of the "UI".
+A common guiding principle to structuring an application is to separate the concept of a "model" from that of the "UI".
 
 Given our "model" as a set of `TodoItem`s, one way to do this is to create a function that just transforms our list of items into a tree of `Node`s:
 
@@ -86,7 +88,7 @@ fun TodoApp(items: List<TodoItem>): Node {
 }
 ```
 
-This can be used elsewhere in your app to render the UI to the screen in response to your application-specific data model. We can imagine a working app as something like:
+This can be used to render the UI to the screen in response to your application-specific data model. A working app could look something like:
 
 ```kotlin
 fun main() {
@@ -96,48 +98,52 @@ fun main() {
 }
 ```
 
-Adding nodes to the children of the parents explicitly can add some complexity. We can create an abstraction for “emitting” nodes into a context object, instead of explicitly adding nodes to the children array of the parent.
+Adding nodes to the children of the parents explicitly like we are doing in `TodoApp` can add some complexity. For all nodes in the tree, we have to make sure we can access the `children` property of the parent `Node` and call `children.add(...)`. This was easy enough to do in this example, but as the logic of the function gets larger, this might become hard to juggle. One thing we can do is create a "holder" object that holds on to the current "parent" `Node`. Then we can have an “emit” function which will add nodes to the parent, but also allow you to provide a "content" lambda with the `Node` you passed in set as `current`.
 
-We will do more with this context object later, and in general it is helping us "compose" the tree, so let's call it a `Composer`. The simplest interface and implementation of this so far could be the following:
+We are going to do more with this context object later, and semantically it is helping us "compose" the tree, so let's call it a `Composer`. We can define it with the following interface:
 
 ```kotlin
 interface Composer {
- // add node as a child to the current Node, execute
- // `block` with `node` as the current Node
- fun emit(node: Node, block: () -> Unit = {})
+  // add node as a child to the current Node, execute
+  // `content` with `node` as the current Node
+  fun emit(node: Node, content: () -> Unit = {})
 }
+```
 
+```kotlin
 // naive implementation. feel free to skip.
 class ComposerImpl(root: Node): Composer {
   private var current: Node = root
 
-  override fun emit(node: Node, block: () -> Unit = {}) {
+  override fun emit(node: Node, content: () -> Unit = {}) {
     val parent = current
     parent.children.add(node)
     current = node
-    block()
+    content()
     current = parent
   }
 }
 ```
 
-Using this new abstraction, we can rewrite our To Do App example:
+Using this new abstraction, we can rewrite our `TodoApp` function as an [extension function](https://kotlinlang.org/docs/reference/extensions.html) on `Composer`:
 
 ```kotlin
 fun Composer.TodoApp(items: List<TodoItem>) {
   emit(Box()) {
     for (item in items) {
-      emit(Text("[${if (item.completed) "x" else " "}] ${item.title}"))
+      emit(Box()) {
+        emit(Text("[${if (item.completed) "x" else " "}] ${item.title}"))
+      }
     }
   }
 }
 ```
 
-Now we can have a top level function called `compose` which would create a `Composer`, run a lambda with it as the receiver, and then return the root node:
+And then we create a top-level function called `compose` which creates a `Composer`, runs a lambda with it as the [receiver](https://stackoverflow.com/questions/45875491/what-is-a-receiver-in-kotlin), and then returns the root node:
 
 ```kotlin
-fun compose(block: Composer.() -> Unit): Node {
-  return Box().also { ComposerImpl(it).apply(block) }
+fun compose(content: Composer.() -> Unit): Node {
+  return Box().also { ComposerImpl(it).apply(content) }
 }
 ```
 
@@ -152,7 +158,9 @@ With this new abstraction, it is also easy to pull out parts of our UI into smal
 
 ```kotlin
 fun Composer.TodoItem(item: TodoItem) {
-  emit(Text("[${if (item.completed) "x" else " "}] ${item.title}"))
+  emit(Box()) {
+    emit(Text("[${if (item.completed) "x" else " "}] ${item.title}"))
+  }
 }
 
 fun Composer.TodoApp(items: List<TodoItem>) {
@@ -168,11 +176,11 @@ This type of easy decomposition or factoring of common bits of UI logic into fun
 
 ## Positional Memoization
 
-Someone performance-conscious might look at the above code snippet and point out that we are creating a completely new tree every time we run `compose`. For large applications, this could create a lot of garbage on each successive pass. Furthermore, it means that if any of those nodes have any private state, the state would not be preserved each time we rebuild the hierarchy.
+Someone performance-conscious might see the above code and point out that we are creating a completely new tree every time we run `compose`. For large applications, this could would create a lot of garbage on each successive pass. From a correctness standpoint, it also means that if any of those nodes have any private state, it would not be preserved each time we rebuilt the hierarchy.
 
-There are several ways one might go about fixing this, but Compose utilizes a technique we are calling “Positional Memoization”. Much of Compose’s architecture is built around this technique, so let’s try to build up a solid mental model of how it works.
+There are several ways to go about fixing this, but Compose utilizes a technique we call “Positional Memoization”. Much of Compose’s architecture is built around this concept, so let’s try to build up a solid mental model of how it works.
 
-In the last section, we introduced a `Composer` object, which held some of the context of where in the tree we were and what node we were emitting into currently. Our goal is to preserve the programming model we had above, but try and reuse the nodes that we had created in the previous execution of the UI. Essentially, we want to cache each node.
+In the last section, we introduced a `Composer` object which held some of the context of where in the tree we were and what node we were currently emitting into. Our goal is to preserve the programming model we had above, but try and reuse the nodes that we had created in the previous execution of the UI. Essentially, we want to cache each node.
 
 Most caches require keys--some way of identifying which object you're wanting to retrieve the cached result of. Assuming we are caching each node in the tree we are creating, in the example above we can see that every time we execute the `TodoApp` function, we will consult the cache in the same exact order every time the function is executed (_this logic breaks down if we introduce any conditional logic into our app, but we'll get to that later_).
 
@@ -188,7 +196,9 @@ interface Composer {
   // have changed, return result of factory, otherwise return previous result
   fun <T> Composer.memo(vararg inputs: Any?, factory: () -> T): T
 }
+```
 
+```kotlin
 // naive implementation. feel free to skip
 class ComposerImpl: Composer {
   private var cache = mutableListOf<Any?>()
@@ -391,7 +401,7 @@ The examples so far have shown a UI that can be represented as a simple projecti
 
 Compose needs to have a state model that handles this "local state" use case. This model might be best understood if we try and build it up from the concepts we’ve discussed so far with Positional Memoization.
 
-To discuss state, let’s consider a different example of a simple counter UI with a “count”, an “Increment” button, and a “Reset” button. To start out, we can imagine trying to have state by just using a top level `count` variable referenced lexically:
+To discuss state, let’s consider a different example of a simple counter UI with a “count”, an “Increment” button, and a “Reset” button. To start out, we can imagine trying to have state by just using a top-level `count` variable referenced lexically:
 
 ```kotlin
 var count = 0
@@ -455,7 +465,7 @@ Let's imagine that we introduce an `@Composable` annotation which takes most of 
 1. All calls to the constructor of a `Node` subclass inside of the function into a corresponding `emit` call with mutation of any of its properties surrounded with a `memo` call.
 2. Any other functions marked with `@Composable` that are called in the body of the function are surrounded by a group. The key of each group will be compiled as an integer that is unique to the _source location_ of the call site.
 3. All `emit` calls in the body of the function are _also_ surrounded by a group. Likewise, the key of each group will be compiled as an integer that is unique to the _source location_ of the call site.
-4. The function receive an extra implicit `Composer` as a parameter, instead of requiring it be a Composer extension function. This is possible because the only code that used the `Composer` is now implicit because of (1) and (2).
+4. The function receives an extra implicit `Composer` as a parameter, instead of requiring it be a Composer extension function. This is possible because the only code that used the `Composer` is now implicit because of (1) and (2).
 5. It means that it can _only_ be invoked from within another `@Composable` function. This is required for (3) to work since we have to pass in the `Composer` object implicitly at the point of invocation.
 
 Given these effects, we can see that the above `App` function would turn into:
@@ -498,10 +508,14 @@ There's still a lot more to cover, but I think that's more than enough for one b
 - How `@Model` works
 - Deferral and parallelization of composable functions
 - Skipping the execution of composable functions when they memoize
-- Invalidating / recomposing specific sub-hierarchies of the tree
+- Invalidating/recomposing specific sub-hierarchies of the tree
 - Having @Composable functions that target different types of trees with compile-time safety
 - Optimizing away comparisons of expressions we can determine will never change
 
 All potential future topics!
 
-Let me know if this blog helped you better understand Compose or not. If not, let me know what was confusing! Have followup questions? [Reach out to me on Twitter](https://twitter.com/intelligibabble)!
+Let me know if this blog helped you better understand Compose or not. If it wasn't, let me know what was confusing!
+
+Have followup questions? [You can find me on Twitter](https://twitter.com/intelligibabble)!
+
+Interested in Compose and want to chat with others about it? Stop by the `#compose` channel on the [Kotlin Slack](https://kotlinlang.slack.com/) ([get an invite](https://surveys.jetbrains.com/s3/kotlin-slack-sign-up?_ga=2.224677786.102200139.1558201416-402641717.1556213862))
