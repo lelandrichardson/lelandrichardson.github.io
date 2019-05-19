@@ -18,13 +18,13 @@ If you haven't yet watched the [session on Declarative UI Patterns](https://www.
  allowfullscreen
 ></iframe>
 
-Since we've announced and [open sourced Compose](http://d.android.com/jetpackcompose), it has generated a lot of interest and questions about how it works. I spent some time thinking about what the right thing to talk about first would be.
+Since we've announced and [open sourced Compose](http://d.android.com/jetpackcompose), it has generated a lot of interest and questions about how it works. I spent some time thinking about what would be the right thing to talk about first.
 
 The goal of this post is to give people a solid mental model around what Compose _does_, and eliminate anything one might think of as "magic". One of the best ways to do this, I think, is to try and construct a simpler version of what we're doing, and incrementally add on to it until we have something that resembles the real thing. In other words, let's try and build Compose starting from nothing but "first principles".
 
 In this post I am not going to try to convince you of the motivations behind this architecture or the project overall; I'm only trying to help explain the _what_ and not the _why_. I'm also assuming that the reader of this post is familiar with the [Kotlin Programming Language](https://kotlinlang.org/docs/reference/) and in particular [Extension Functions](https://kotlinlang.org/docs/reference/extensions.html).
 
-Finally, if it wasn't clear already, _code snippets in this post will not be reflective of what code targetting Compose will look like_.
+Finally, if it wasn't clear already, _code snippets in this post will not be reflective of what code targeting Compose will look like_.
 
 ## UIs are Trees
 
@@ -58,7 +58,7 @@ Now we need a way to take a tree of Nodes and render them to pixels on the scree
 fun renderNodeToScreen(node: Node) { /* ... */ }
 ```
 
-A "Hello World" type application in this application might look something like this:
+A "Hello World" in this application might look something like this:
 
 ```kotlin
 fun main() {
@@ -172,21 +172,21 @@ fun Composer.TodoApp(items: List<TodoItem>) {
 }
 ```
 
-This type of easy decomposition or factoring of common bits of UI logic into functions is a critically important feature. We can call each of these functions "Components".
+This type of easy decomposition -- or factoring of common bits of UI logic into functions -- is a critically important feature. We can call each of these functions "Components".
 
 ## Positional Memoization
 
-Someone performance-conscious might see the above code and point out that we are creating a completely new tree every time we run `compose`. For large applications, this could would create a lot of garbage on each successive pass. From a correctness standpoint, it also means that if any of those nodes have any private state, it would not be preserved each time we rebuilt the hierarchy.
+Someone performance-conscious might see the above code and point out that we are creating a completely new tree every time we run `compose`. For large applications, this could would create a lot of garbage on each successive pass. From a correctness standpoint, it also means that if any of those nodes have any private state, it would not be preserved each time we rebuild the hierarchy.
 
 There are several ways to go about fixing this, but Compose utilizes a technique we call “Positional Memoization”. Much of Compose’s architecture is built around this concept, so let’s try to build up a solid mental model of how it works.
 
-In the last section, we introduced a `Composer` object which held some of the context of where in the tree we were and what node we were currently emitting into. Our goal is to preserve the programming model we had above, but try and reuse the nodes that we had created in the previous execution of the UI. Essentially, we want to cache each node.
+In the last section, we introduced a `Composer` object which holds some of the context of where in the tree we are and what node we're currently emitting into. Our goal is to preserve the programming model above, but try and reuse the nodes that we created in the previous execution (rendering?) of the UI. Essentially, we want to cache each node.
 
 Most caches require keys--some way of identifying which object you're wanting to retrieve the cached result of. Assuming we are caching each node in the tree we are creating, in the example above we can see that every time we execute the `TodoApp` function, we will consult the cache in the same exact order every time the function is executed (_this logic breaks down if we introduce any conditional logic into our app, but we'll get to that later_).
 
-If we utilize _execution order_ as the cache key, we can avoid lookup cost entirely; we can just use a flat list or array to hold the nodes resulting in retrieval being very cheap. We can just keep track of a "current index" while we execute the app transform function and increment it every time we retrieve a value.
+If we utilize _execution order_ as the cache key, we can avoid the lookup cost entirely; we can just use a flat list or array to hold the nodes resulting in retrieval being very cheap. We can just keep track of a "current index" while we execute the app transform function and increment it every time we retrieve a value.
 
-As a simple implementation of this, consider the following two methods being added to the `Composer` class we had above:
+As a simple implementation of this, consider the following two methods being added to the `Composer` class above:
 
 ```kotlin
 interface Composer {
@@ -239,7 +239,7 @@ class ComposerImpl: Composer {
 
 In this naive implementation, we are just using a plain `MutableList`, but in Compose we are using a [Gap Buffer](https://en.wikipedia.org/wiki/Gap_buffer) in order to keep lookups, insertions, and deletions as cheap as possible.
 
-Note that `memo` will increment the cache index `n+1` times when it is called with `n` inputs. This means that it has the expectation that it will be called with the same number of inputs each time it is called for a given “position”, or else the cache could get misaligned over time.
+Note that `memo` will increment the cache index `n+1` times when it is called with `n` inputs. This relies on the expectation that it will be called with the same number of inputs each time it is called for a given “position”, or else the cache could get misaligned over time.
 
 With this `memo` function, we are able to change our previous `TodoApp` example to now take advantage of memoization:
 
@@ -271,7 +271,7 @@ For instance, consider the fact that `text` is a mutable property of `Text`:
 class Text(var text: String) : Node()
 ```
 
-Because of this, we can memoize all Text nodes, and just update the `text` attribute when it changes. To do this, we want a slightly different signature of `emit`:
+Because of this, we can reuse Text nodes, just updating the `text` attribute when it changes. To do this, we want a slightly different signature of `emit`:
 
 ```kotlin
 interface Composer {
@@ -341,7 +341,7 @@ This concept complicates the implementation of the memoization cache of the comp
 
 The `group` method is expected to have a key passed into it. This key will be cached in the cache array just like inputs to `memo`, but when it doesn't match the key from the previous execution, the runtime will seek through the cache to determine if the group has been moved, removed, or is a new group to be inserted.
 
-Note that the key itself of the group is only scoped to the immediate parent group, so there is no need for keys to be globally unique. Now if we want to correctly use groups in our TodoApp example, we might have something like:
+Note that the key of the group itself is only scoped to the immediate parent group, so there is no need for keys to be globally unique, just unique among its siblings. Now if we want to correctly use groups in our TodoApp example, we might end up with something like:
 
 ```kotlin
 fun Composer.TodoItem(item: TodoItem) {
@@ -381,7 +381,7 @@ In this case, we’ve just assigned unique integers as the keys to each group. I
 
 Now, when the size of `items` changes from 2 to 3, we know to “add” items into the cache instead of look at the part of the cache that is ahead, since that would be outside of the group we are in. The same goes for cases where items are removed from the cache.
 
-Items that “move” are similarly handled, although the algorithm to do so is a bit more complex. We won’t be getting into this in detail, but the important bit to understand is that we track “moves” in a group based on the key of the child group. If we shuffled the `items` list in this example, the fact that each TodoItem call is surrounded by a group with key `1` means that the Composer has no way of knowing that the order of the items changed. This isn’t fatal, it just means that the number of changes that are memoized is unlikely to be minimal, and any state that was associated with the item may now be associated with a different item. We could, however, use the `item` itself as the key:
+Items that “move” are similarly handled, although the algorithm to do so is a bit more complex. We won’t be getting into this in detail, but the important bit to understand is that we track “moves” in a group based on the key of the child group. If we shuffled the `items` list in this example, the fact that each `TodoItem` call is surrounded by a group with key `1` means that the Composer has no way of knowing that the order of the items changed. This isn’t fatal, it just means that the number of changes that are memoized is unlikely to be minimal, and any state that was associated with the item may now be associated with a different item. We could, however, use the `item` itself as the key:
 
 ```kotlin
 for (item in items) {
@@ -393,7 +393,7 @@ for (item in items) {
 
 Now, each group and the contained set of cached values in that group will move along with the items, and then `TodoItem` will get called with the memoization cache of the same group from the previous compose, increasing the likelihood that the changes are minimal, with the cost of moving the cached items around.
 
-I will talk more in a future post about how these types of keys can manifest themselves automatically with the `@Pivotal` attribute.
+I will get into more detail in a future post about how these types of keys can manifest themselves automatically with the `@Pivotal` attribute.
 
 ## State
 
@@ -421,7 +421,7 @@ fun main() {
 }
 ```
 
-Since we are using global state, if this component is used in multiple places the state will be shared across each usage. Though this can be useful in some situations, it’s usually not what we want. We want to be able to create an “instance” of count that can be used locally to the “instance” of App across compositions ("instance" is in quotes here, because there isn't actually an "instance" of App in the traditional sense).
+Since we are using global state, if this component is used in multiple places the state will be shared across all usages. Though this can be useful in some situations, it’s usually not what we want. We want to be able to create an “instance” of count that can be used locally to the “instance” of App across compositions ("instance" is in quotes here, because there isn't actually an "instance" of App in the OOP sense).
 
 How can we do this in Compose?
 
@@ -466,7 +466,7 @@ Let's imagine that we introduce an `@Composable` annotation which takes most of 
 2. Any other functions marked with `@Composable` that are called in the body of the function are surrounded by a group. The key of each group will be compiled as an integer that is unique to the _source location_ of the call site.
 3. All `emit` calls in the body of the function are _also_ surrounded by a group. Likewise, the key of each group will be compiled as an integer that is unique to the _source location_ of the call site.
 4. The function receives an extra implicit `Composer` as a parameter, instead of requiring it be a Composer extension function. This is possible because the only code that used the `Composer` is now implicit because of (1) and (2).
-5. It means that it can _only_ be invoked from within another `@Composable` function. This is required for (3) to work since we have to pass in the `Composer` object implicitly at the point of invocation.
+5. It means that it can _only_ be invoked from within another `@Composable` function. This is required for (3) to work since we have to pass in the `Composer` object at the point of invocation.
 
 Given these effects, we can see that the above `App` function would turn into:
 
@@ -499,22 +499,22 @@ Similarly, the `TodoApp` function from above could become:
 }
 ```
 
-That simplifies things considerably. The goal here is that while the `@Composable` annotation implies some amount of machinery around their invocations, it should not drastically alter the mental model someone has around what is going on. This is analogous to the machinery that is required to implement `suspend` functions and Coroutines in Kotlin. One could write the same code using Futures, but if we can create a consistent mental model around what `suspend` means, then we can fit it into the language and reduce a significant amount of boilerplate.
+That simplifies things considerably. The goal here is that while the `@Composable` annotation introduces some amount of machinery around invocations, it should not drastically alter the mental model someone has around what is going on. This is analogous to the machinery that is required to implement `suspend` functions and Coroutines in Kotlin. One could write the same code using Futures, but if we can create a consistent mental model around what `suspend` means, then we can fit it into the language and reduce a significant amount of boilerplate.
 
 With this mapping of `@Composable` invocations to the faux Compose runtime we have just built, you should have a solid understanding of the mechanics of `@Composable` and some of the design decisions that Compose has taken to end up where it is today.
 
-There's still a lot more to cover, but I think that's more than enough for one blog. There are several things Compose is doing or planning to do that are not covered in this blog:
+There's still a lot more to cover, but I think that's more than enough for one post. There are several things Compose is doing or planning to do that are not covered in this post:
 
 - How `@Model` works
 - Deferral and parallelization of composable functions
 - Skipping the execution of composable functions when they memoize
 - Invalidating/recomposing specific sub-hierarchies of the tree
-- Having @Composable functions that target different types of trees with compile-time safety
+- Having @Composable functions that target different types of trees with compile-time safety (what kind of safety? type safety?)
 - Optimizing away comparisons of expressions we can determine will never change
 
 All potential future topics!
 
-Let me know if this blog helped you better understand Compose or not. If it wasn't, let me know what was confusing!
+Let me know if this blog post helped you better understand Compose or not. If it didn't, let me know what was confusing!
 
 Have followup questions? [You can find me on Twitter](https://twitter.com/intelligibabble)!
 
