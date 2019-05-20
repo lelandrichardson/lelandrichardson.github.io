@@ -32,7 +32,7 @@ At its core, Compose is designed to efficiently build _and maintain_ tree-like d
 
 This programming model is not entirely new. We've had a lot of inspiration from other frameworks such as [React](https://reactjs.org/), [Litho](https://fblitho.com/), [Vue](https://vuejs.org/), [Flutter](https://flutter.dev/), and more, all of which mostly accomplish the same goal, albeit in slightly different ways.
 
-As one might surmise from the list of frameworks above, one of the more compelling use cases for this type of a system is to build user interfaces (UIs). UIs are typically tree-like data structures that change over time. Moreover, UIs are becoming more and more dynamic and complicated, resulting in demand for a programming model to help tame that complexity.
+As we might surmise from the list of frameworks above, one of the more compelling use cases for this type of a system is to build user interfaces (UIs). UIs are typically tree-like data structures that change over time. Moreover, UIs are becoming more and more dynamic and complicated, resulting in demand for a programming model to help tame that complexity.
 
 Compose's runtime does not target a specific type of tree, and is already being used to target several different tree types: Android Views, ComponentNodes, Vectors, TextSpan, and there will likely be more to come.
 
@@ -339,8 +339,6 @@ In this example, if we had 2 items the first time the app composed, and 3 items 
 
 The first two items would memoize correctly, but when we encounter the third item, we would start to “memoize” on top of the `Text` node that was previously used below the list of TodoItems in the first pass! Essentially, any time there is any control-flow that causes the number of items cached in the list to change, everything after that conditional logic would be misaligned with the cache.
 
-TODO: graphic
-
 To fix this, we need to introduce another fundamental concept to “Positional Memoization”: Groups.
 
 ```kotlin
@@ -391,8 +389,6 @@ fun Composer.TodoApp(items: List<TodoItem>) {
   }
 }
 ```
-
-TODO: graphic
 
 In this case, we’ve just assigned unique integers as the keys to each group. Importantly, we’ve also surrounded the call to `TodoItem` with a group here, which will ensure that each TodoItem is memoized independently.
 
@@ -477,7 +473,9 @@ Now that we are using `memo`, the instance of `State` will be the same for every
 
 OK, so we've gotten pretty far in being able to build our App's UI using these `Composer` [extension functions](https://kotlinlang.org/docs/reference/extensions.html). That said, we've managed to _really_ complicate just a basic UI in order to make this approach efficient and robust.
 
-Let's imagine that we introduce an `@Composable` annotation which takes most of the boilerplate that we've added away. This annotation would have the following effects:
+All of the boilerplate that we've added could have been added systematically. We could follow a simple formula or set of rules and add this boilerplate correctly without knowing anything about the specific application. 
+
+As a result, it is reasonable to have the compiler generate this code for us. Compose introduces an `@Composable` annotation which does exactly that. In particular, this annotation has the following effects:
 
 1. All calls to the constructor of a `Node` subclass inside of the function into a corresponding `emit` call with mutation of any of its properties surrounded with a `memo` call.
 2. Any other functions marked with `@Composable` that are called in the body of the function are surrounded by a group. The key of each group will be compiled as an integer that is unique to the _source location_ of the call site.
@@ -518,9 +516,9 @@ Similarly, the `TodoApp` function from above could become:
 }
 ```
 
-That simplifies things considerably. The goal here is that while the `@Composable` annotation implies some amount of machinery around their invocations, it should not drastically alter the mental model someone has around what is going on. This is analogous to the machinery that is required to implement `suspend` functions and Coroutines in Kotlin. One could write the same code using Futures, but if we can create a consistent mental model around what `suspend` means, then we can fit it into the language and reduce a significant amount of boilerplate.
+That simplifies things considerably. The goal here is that while the `@Composable` annotation implies some amount of machinery around their invocations, it should not drastically alter the mental model someone has around what is going on. This is analogous to the machinery that is required to implement `suspend` functions and Coroutines in Kotlin. We could write the same code using Futures, but if we can create a consistent mental model around what `suspend` means, then we can fit it into the language and reduce a significant amount of boilerplate.
 
-With this mapping of `@Composable` invocations to the faux Compose runtime we have just built, you should have a solid understanding of the mechanics of `@Composable` and some of the design decisions that Compose has taken to end up where it is today.
+With this mapping of `@Composable` invocations to the faux Compose runtime we have just built, you should have a solid understanding of what `@Composable` actually does and some of the design decisions that Compose has taken to end up where it is today.
 
 There's still a lot more to cover, but I think that's more than enough for one post. There are several things Compose is doing or planning to do that are not covered in this post:
 
