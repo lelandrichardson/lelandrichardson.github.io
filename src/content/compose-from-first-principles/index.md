@@ -1,10 +1,10 @@
 ---
 title: "Compose From First Principles"
-date: "2019-05-13T07:00:00.000Z"
+date: "2019-05-20T07:00:00.000Z"
 draft: true
 ---
 
-Last week was the week of Google I/O 2019. It was a particularly exciting I/O for me, as it was the first time Google has talked publicly about Jetpack Compose, the project I was hired to work on in February of 2018.
+Earlier this month thousands of Developers from around the world attended Google I/O 2019. It was a particularly exciting I/O for me, as it was the first time Google has talked publicly about Jetpack Compose, the project I was hired to work on in February of 2018.
 
 Compose is an ambitious multi-team effort to reimagine Android's UI Toolkit more than 10 years after the Android Platform launched with the original UI Toolkit.
 
@@ -45,12 +45,14 @@ abstract class Node {
   val children = mutableListOf<Node>()
 }
 
-class Box : Node()
+enum class Orientation { Vertical, Horizontal }
+
+class Stack(var orientation: Orientation) : Node()
 
 class Text(var text: String) : Node()
 ```
 
-Here we just have two primitives: `Box` and `Text`. In reality, there would probably be more, and they would probably have more properties and methods, etc., but again, we are keeping it simple. In the existing Android toolkit, this would correspond to [`View`](https://developer.android.com/reference/android/view/View) and all of its subclasses, and on the web this would correspond to any [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element).
+Here we just have two primitives: `Stack` and `Text`. In reality, there would probably be more, and they would probably have more properties and methods, etc., but again, we are keeping it simple. In the existing Android toolkit, these would correspond to [`View`](https://developer.android.com/reference/android/view/View) and all of its subclasses, and on the web these would correspond to any [`Element`](https://developer.mozilla.org/en-US/docs/Web/API/Element).
 
 Now we need a way to take a tree of Nodes and render them to pixels on the screen. How this is done isn't important for this article, so let's just assume we have a function of the following shape:
 
@@ -76,12 +78,11 @@ Given our "model" is a list of `TodoItem`s, one way to do this is to create a fu
 
 ```kotlin
 fun TodoApp(items: List<TodoItem>): Node {
-  return Box().apply {
+  return Stack(Orientation.Vertical).apply {
     for (item in items) {
-      children.add(Box().apply {
-        children.add(
-            Text("[${if (item.completed) "x" else " "}] ${item.title}")
-        )
+      children.add(Stack(Orientation.Horizontal).apply {
+        children.add(Text(if (item.completed) "x" else " "))
+        children.add(Text(item.title))
       })
     }
   }
@@ -131,10 +132,11 @@ Using this new abstraction, we can rewrite our `TodoApp` function as an [extensi
 
 ```kotlin
 fun Composer.TodoApp(items: List<TodoItem>) {
-  emit(Box()) {
+  emit(Stack(Orientation.Vertical)) {
     for (item in items) {
-      emit(Box()) {
-        emit(Text("[${if (item.completed) "x" else " "}] ${item.title}"))
+      emit(Stack(Orientation.Horizontal)) {
+        emit(Text(if (item.completed) "x" else " "))
+        emit(Text(item.title))
       }
     }
   }
@@ -145,7 +147,9 @@ And then we create a top-level function called `compose` which creates a `Compos
 
 ```kotlin
 fun compose(content: Composer.() -> Unit): Node {
-  return Box().also { ComposerImpl(it).apply(content) }
+  return Stack(Orientation.Vertical).also {
+    ComposerImpl(it).apply(content)
+  }
 }
 ```
 
@@ -160,13 +164,14 @@ With this new abstraction, it is also easy to pull out parts of our UI into smal
 
 ```kotlin
 fun Composer.TodoItem(item: TodoItem) {
-  emit(Box()) {
-    emit(Text("[${if (item.completed) "x" else " "}] ${item.title}"))
+  emit(Stack(Orientation.Horizontal)) {
+    emit(Text(if (item.completed) "x" else " "))
+    emit(Text(item.title))
   }
 }
 
 fun Composer.TodoApp(items: List<TodoItem>) {
-  emit(Box()) {
+  emit(Stack(Orientation.Vertical)) {
     for (item in items) {
       TodoItem(item)
     }
@@ -178,7 +183,7 @@ This type of easy decomposition--or factoring of common bits of UI logic into fu
 
 ## Positional Memoization
 
-Someone performance-conscious might see the above code and point out that we are creating a completely new tree every time we run `compose`. For large applications, this will create a lot of garbage on each successive pass. From a correctness standpoint, it also means that if any of those nodes have any private state, it will not be preserved each time we rebuild the hierarchy.
+Someone performance-conscious might see the above code and point out that we are creating a completely new tree every time we run `compose`. For large applications, this will create a lot of unnecessary allocations on each successive pass. From a correctness standpoint, it also means that if any of those nodes have any private state, it will not be preserved each time we rebuild the hierarchy.
 
 There are several ways to go about fixing this, but Compose utilizes a technique we call “Positional Memoization”. Much of Compose’s architecture is built around this concept, so let’s try to build up a solid mental model of how it works.
 
@@ -247,15 +252,22 @@ With this `memo` function, we are able to change our previous `TodoApp` example 
 
 ```kotlin
 fun Composer.TodoItem(item: TodoItem) {
-  emit(
-    memo(item.completed, item.title) {
-      Text("[${if (item.completed) "x" else " "}] ${item.title}")
-    }
-  )
+  emit(memo { Stack(Orientation.Horizontal) }) {
+    emit(
+      memo(item.completed) {
+        Text(if (item.completed) "x" else " ")
+      }
+    )
+    emit(
+      memo(item.title) {
+        Text(item.title)
+      }
+    )
+  }
 }
 
 fun Composer.TodoApp(items: List<TodoItem>) {
-  emit(memo { Box() }) {
+  emit(memo { Stack(Orientation.Vertical) }) {
     for (item in items) {
       TodoItem(item)
     }
@@ -308,11 +320,16 @@ For instance, the `TodoItem` component can be rewritten as:
 
 ```kotlin
 fun Composer.TodoItem(item: TodoItem) {
-  val text = "[${if (item.completed) "x" else " "}] ${item.title}"
-  emit(
-      { Text() },
-      { memo(text) { it.text = text }}
-  )
+  emit({ Stack(Orientation.Horizontal) }) {
+    emit(
+      { Text() }
+      { memo(item.completed) { it.text = if (item.completed) "x" else " " } }
+    )
+    emit(
+      { Text() }
+      { memo(item.title) { it.text = item.title } }
+    )
+  }
 }
 ```
 
@@ -322,7 +339,7 @@ The keen reader might look at this and notice that there is a problem with this 
 
 ```kotlin
 fun Composer.TodoApp(items: List<TodoItem>) {
-  emit({ Box() }) {
+  emit({ Stack(Orientation.Vertical) }) {
     for (item in items) {
         TodoItem(item)
     }
@@ -360,18 +377,23 @@ Note that the key of the group is only scoped to the immediate parent group, so 
 
 ```kotlin
 fun Composer.TodoItem(item: TodoItem) {
-  val text = "[${if (item.completed) "x" else " "}] ${item.title}"
   group(3) {
-    emit(
-      { Text() },
-      { memo(text) { it.text = text } }
-    )
+    emit({ Stack(Orientation.Horizontal) }) {
+      emit(
+        { Text() }
+        { memo(item.completed) { it.text = if (item.completed) "x" else " " } }
+      )
+      emit(
+        { Text() }
+        { memo(item.title) { it.text = item.title } }
+      )
+    }
   }
 }
 
 fun Composer.TodoApp(items: List<TodoItem>) {
   group(0) {
-    emit({ Box() }) {
+    emit({ Stack(Orientation.Vertical) }) {
       for (item in items) {
           group(1) {
               TodoItem(item)
@@ -473,7 +495,7 @@ Now that we are using `memo`, the instance of `State` will be the same for every
 
 OK, so we've gotten pretty far in being able to build our App's UI using these `Composer` [extension functions](https://kotlinlang.org/docs/reference/extensions.html). That said, we've managed to _really_ complicate just a basic UI in order to make this approach efficient and robust.
 
-All of the boilerplate that we've added could have been added systematically. We could follow a simple formula or set of rules and add this boilerplate correctly without knowing anything about the specific application. 
+All of the boilerplate that we've added could have been added systematically. We could follow a simple formula or set of rules and add this boilerplate correctly without knowing anything about the specific application.
 
 As a result, it is reasonable to have the compiler generate this code for us. Compose introduces an `@Composable` annotation which does exactly that. In particular, this annotation has the following effects:
 
@@ -501,13 +523,14 @@ Similarly, the `TodoApp` function from above could become:
 
 ```kotlin
 @Composable fun TodoItem(item: TodoItem) {
-  Box {
-    Text("[${if (item.completed) "x" else " "}] ${item.title}")
+  Stack(Orientation.Horizontal) {
+    Text(if (item.completed) "x" else " ")
+    Text(item.title)
   }
 }
 
 @Composable fun TodoApp(items: List<TodoItem>) {
-  Box {
+  Stack(Orientation.Vertical) {
     for (item in items) {
       TodoItem(item)
     }

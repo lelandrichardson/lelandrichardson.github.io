@@ -4,11 +4,7 @@ date: "2019-05-16T07:00:00.000Z"
 draft: false
 ---
 
-Last week was the week of Google I/O 2019. It was a particularly exciting I/O for me, as it was the first time Google has talked publicly about [Jetpack Compose](http://d.android.com/jetpackcompose), the project I was hired to work on in February of 2018.
-
-Compose is an ambitious multi-team effort to reimagine Android's UI Toolkit more than 10 years after the Android Platform launched with the original UI Toolkit.
-
-If you haven't yet watched the [session on Declarative UI Patterns](https://www.youtube.com/watch?v=VsStyq4Lzxo), you should do that now. It is a proper overview of the motivations and goals behind the project.
+If you haven't yet watched the [session on Declarative UI Patterns](https://www.youtube.com/watch?v=VsStyq4Lzxo), you should do that now. It is a proper overview of the motivations and goals behind the Jetpack Compose project that Google unveiled last week at Google I/O 2019.
 
 <iframe 
   style="width:100%;height:320px;" 
@@ -17,6 +13,8 @@ If you haven't yet watched the [session on Declarative UI Patterns](https://www.
   allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
   allowfullscreen
 ></iframe>
+
+Compose is an ambitious multi-team effort to reimagine Android's UI Toolkit more than 10 years after the Android Platform launched with the original UI Toolkit.
 
 Compose is _extremely early_. It is currently "pre-alpha" (if that's a thing?), which essentially means that it's nowhere near done, pretty much everything is subject to change, and we make absolutely no guarantees around API stability. For now, we ask that you **do NOT use Compose in your production apps until we say it is ready**.
 
