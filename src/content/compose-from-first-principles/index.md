@@ -1,7 +1,7 @@
 ---
 title: "Compose From First Principles"
-date: "2019-05-20T07:00:00.000Z"
-draft: true
+date: "2019-05-22T07:00:00.000Z"
+draft: false
 ---
 
 Thousands of Developers from around the world attended Google I/O 2019 earlier this month. It was a particularly exciting I/O for me, as it was the first time Google has talked publicly about Jetpack Compose, the project I was hired to work on in February of 2018.
