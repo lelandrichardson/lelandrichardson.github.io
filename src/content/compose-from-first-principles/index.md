@@ -8,7 +8,7 @@ Thousands of Developers from around the world attended Google I/O 2019 earlier t
 
 Compose is an ambitious multi-team effort to reimagine Android's UI Toolkit more than 10 years after the Android Platform launched with the original UI Toolkit.
 
-If you haven't yet watched the [session on Declarative UI Patterns](https://www.youtube.com/watch?v=VsStyq4Lzxo), you should do that now. It is a proper overview of the motivations and goals behind the project, which this post is _not_.
+If you haven't yet watched the [session on Declarative UI Patterns](https://www.youtube.com/watch?v=VsStyq4Lzxo), it is a proper overview of the motivations and goals behind the project, which this post is _not_. If you would like to understand the motivations behind the project before taking the time to read this article, which discusses implementation details, give it a watch!
 
 <iframe
  style="width:100%;height:320px;"
@@ -101,7 +101,7 @@ fun main() {
 
 Adding nodes to the children of the parents explicitly like we are doing in `TodoApp` can add some complexity. For all nodes in the tree, we have to make sure we can access the `children` property of the parent `Node` and call `children.add(...)`. This was easy enough to do in this example, but as the logic of the function gets larger, this might become hard to juggle.
 
-One thing we can do is create a "holder" object that holds on to the current "parent" `Node`. Then we can have an “emit” function which will add nodes to the parent, but also allow you to provide a "content" lambda with the `Node` you passed in set as `current`.
+One thing we can do is create a "holder" object that holds on to the current "parent" `Node`. Then we can have an “emit” function which will add nodes to the parent, but also allow you to provide a "content" lambda with the `Node` you passed in set as `current`. The word "emit" is being used here to describe that we are storing a node at this "position" in the tree, without having to know exactly which node we are adding it to.
 
 We are going to do more with this context object later, and semantically it is helping us "compose" the tree, so let's call it a `Composer`. We can define it with the following interface:
 
@@ -119,10 +119,15 @@ class ComposerImpl(root: Node): Composer {
   private var current: Node = root
 
   override fun emit(node: Node, content: () -> Unit = {}) {
+    // store current parent to restore later
     val parent = current
     parent.children.add(node)
     current = node
+    // with `current` set to `node`, we execute the passed in lambda
+    // in the "scope" of it, so that emitted nodes inside of this
+    // lambda end up as children to `node`.
     content()
+    // restore current
     current = parent
   }
 }
@@ -218,10 +223,14 @@ class ComposerImpl: Composer {
   }
 
   private fun <T> changed(value: T): Boolean {
+    // if we are inserting, we have nothing to compare against,
+    // so just store it and return
     return if (inserting) {
       set(value)
       false
     } else {
+      // get current item, increment index. always store new
+      // value, but return true only if they don't compare
       val index = index++
       val item = cache[index]
       cache[index] = value
@@ -230,13 +239,19 @@ class ComposerImpl: Composer {
   }
 
   private fun <T> cache(update: Boolean, factory: () -> T): T {
+    // if we are asked to update the value, or if it is the first time
+    // the cache is consulted, we need to execute the factory, and save
+    // the result
     return if (inserting || update) factory().also { set(it) }
+    // otherwise, just return the value in the cache
     else get() as T
   }
 
   override fun <T> Composer.memo(vararg inputs: Any?, factory: () -> T): T {
     var valid = true
+    // we need to make sure we check every input, every time. no short-circuiting.
     for (input in inputs) {
+      // it is not valid if any of the inputs have changed from last time
       valid = !changed(input) && valid
     }
     return cache(!valid) { factory() }
@@ -354,7 +369,11 @@ fun Composer.TodoApp(items: List<TodoItem>) {
 
 In this example, if we had 2 items the first time the app composed, and 3 items the second time, what would happen?
 
-The first two items would memoize correctly, but when we encounter the third item, we would start to “memoize” on top of the `Text` node that was previously used below the list of TodoItems in the first pass! Essentially, any time there is any control-flow that causes the number of items cached in the list to change, everything after that conditional logic would be misaligned with the cache.
+The first two items would memoize correctly. The previous execution had the same two items, which means the cache was consulted the same exact number of times with the same values. No issue.
+
+The interesting thing is what happens when we get to the third `TodoItem`. The previous execution only had two items, so when we get to the third item in the list, we start to consult the cache on top of what was previously used for the `Text` node with `"Total: ${items.size} items"` as its text, since that was the next node in the cache. Furthermore, when we get to that `Text` node, the cache won't have the values from the previous execution to consult, so we'll allocate a new `Text` node.
+
+Essentially, any time there is any control-flow that causes the number of items cached in the list to change, or the order in which they're executed to change, our cache could get "misaligned", and we will have undefined behavior.
 
 To fix this, we need to introduce another fundamental concept to “Positional Memoization”: Groups.
 
@@ -367,7 +386,7 @@ interface Composer {
 }
 ```
 
-I'm going to leave the implementation of this out of this blog post. In reality, implementing this correctly is [quite complicated](https://android.googlesource.com/platform/frameworks/support/+/f06c7ce26e29f15792b54490e4c2f77197d1222f/compose/runtime/src/main/java/androidx/compose/Composer.kt#592) and I think would distract from the post.
+I'm going to leave the implementation of this out of this blog post. In reality, implementing this correctly is [quite complicated](https://android.googlesource.com/platform/frameworks/support/+/f06c7ce26e29f15792b54490e4c2f77197d1222f/compose/runtime/src/main/java/androidx/compose/Composer.kt#592) and I think explaining it in full would distract from the post.
 
 This concept complicates the implementation of the memoization cache of the composer, but it is critical for Positional Memoization to work correctly. Essentially, a group is what turns the linear cache into a tree-like structure, where we can then identify when nodes in that tree have been moved, removed, or added.
 
@@ -379,14 +398,18 @@ Note that the key of the group is only scoped to the immediate parent group, so 
 fun Composer.TodoItem(item: TodoItem) {
   group(3) {
     emit({ Stack(Orientation.Horizontal) }) {
-      emit(
-        { Text() }
-        { memo(item.completed) { it.text = if (item.completed) "x" else " " } }
-      )
-      emit(
-        { Text() }
-        { memo(item.title) { it.text = item.title } }
-      )
+      group(4) {
+        emit(
+          { Text() }
+          { memo(item.completed) { it.text = if (item.completed) "x" else " " } }
+        )
+      }
+      group(5) {
+        emit(
+          { Text() }
+          { memo(item.title) { it.text = item.title } }
+        )
+      }
     }
   }
 }
@@ -432,7 +455,7 @@ I will get into more detail in a future post about how these types of keys can b
 
 ## State
 
-The examples so far have shown a UI that can be represented as a simple projection of data. The reality is that most UIs end up with several pieces of state that don’t make any sense as part of the overall data model, but instead are specific to the UI itself (i.e., “view state”). For example, it would be inconvenient if state such as text selection, scroll position, focus, dialog visibility, etc. all had to be part of your domain-specific data model. This state is the concern of the UI, and nothing more.
+The examples so far have shown a UI that can be represented as a simple transform or projection of data. The reality is that most UIs end up with several pieces of state that don’t make any sense as part of the overall data model, but instead are specific to the UI itself (i.e., “view state”). For example, it would be inconvenient if state such as text selection, scroll position, focus, dialog visibility, etc. all had to be part of your domain-specific data model. This state is the concern of the UI, and nothing more.
 
 Compose needs to have a state model that handles this "local state" use case. This model might be best understood if we try and build it up from the concepts we’ve discussed so far with Positional Memoization.
 
@@ -539,7 +562,7 @@ Similarly, the `TodoApp` function from above could become:
 }
 ```
 
-That simplifies things considerably. The goal here is that while the `@Composable` annotation implies some amount of machinery around their invocations, it should not drastically alter the mental model someone has around what is going on. This is analogous to the machinery that is required to implement `suspend` functions and Coroutines in Kotlin. We could write the same code using Futures, but if we can create a consistent mental model around what `suspend` means, then we can fit it into the language and reduce a significant amount of boilerplate.
+That simplifies things considerably. The goal here is that while the `@Composable` annotation implies some amount of machinery around their invocations, it should not drastically alter the mental model someone has around what happens when invoking a function. This is analogous to the machinery that is required to implement `suspend` functions and Coroutines in Kotlin. We could write the same code using Futures, but if we can create a consistent mental model around what `suspend` means, then we can fit it into the language and reduce a significant amount of boilerplate.
 
 With this mapping of `@Composable` invocations to the faux Compose runtime we have just built, you should have a solid understanding of what `@Composable` actually does and some of the design decisions that Compose has taken to end up where it is today.
 
