@@ -522,7 +522,7 @@ All of the boilerplate that we've added could have been added systematically. We
 
 As a result, it is reasonable to have the compiler generate this code for us. Compose introduces an `@Composable` annotation which does exactly that. In particular, this annotation has the following effects:
 
-1. All calls to the constructor of a `Node` subclass inside of the function into a corresponding `emit` call with mutation of any of its properties surrounded with a `memo` call.
+1. All calls to the constructor of a `Node` subclass inside of the function will be transformed into a corresponding `emit` call with mutation of any of its properties surrounded with a `memo` call.
 2. Any other functions marked with `@Composable` that are called in the body of the function are surrounded by a group. The key of each group will be compiled as an integer that is unique to the _source location_ of the call site.
 3. All `emit` calls in the body of the function are _also_ surrounded by a group. Likewise, the key of each group will be compiled as an integer that is unique to the _source location_ of the call site.
 4. The function receives an extra implicit `Composer` as a parameter, instead of requiring it be a Composer extension function. This is possible because the only code that used the `Composer` is now implicit because of (1) and (2).
